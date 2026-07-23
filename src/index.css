@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-blush font-sans text-charcoal antialiased;
+    overflow-x: hidden;
+  }
+
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  ::selection {
+    background-color: #B76E79;
+    color: white;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-medium tracking-wider uppercase transition-all duration-300;
+    background: #B76E79;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #A35E68;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(183, 110, 121, 0.3);
+  }
+
+  .section-heading {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-charcoal;
+  }
+
+  .section-subheading {
+    @apply text-lg text-charcoal/70 font-light max-w-xl mx-auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(15px, -20px) scale(1.02); }
+  50% { transform: translate(-10px, -35px) scale(0.98); }
+  75% { transform: translate(-20px, -10px) scale(1.01); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-8px, 15px) scale(1.03); }
+  66% { transform: translate(12px, -8px) scale(0.97); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10px, -12px) scale(0.97); }
+  66% { transform: translate(-15px, 10px) scale(1.02); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 11s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 9s ease-in-out infinite;
+}

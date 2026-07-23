@@ -1,0 +1,25 @@
+[
+  {
+    "timestamp": "2026-07-22T14:05:29.903Z",
+    "shipping": {
+      "name": "Chetachetan",
+      "email": "chetansoni.6208@gmail.com",
+      "phone": "+919877441668",
+      "address": "Ma Sa",
+      "city": "Ma Sa",
+      "state": "Punjab",
+      "zip": "151505"
+    },
+    "items": [
+      {
+        "product": {
+          "id": 5,
+          "name": "Auræ Luminous Body Oil",
+          "price": 45
+        },
+        "quantity": 1
+      }
+    ],
+    "subtotal": 45
+  }
+]
