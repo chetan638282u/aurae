@@ -29,7 +29,7 @@ function ChatMessage({ message }) {
       <div
         className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
           isBot
-            ? 'glass rounded-2xl rounded-bl-md text-charcoal/80'
+            ? 'bg-white/80 rounded-2xl rounded-bl-md text-charcoal'
             : 'rounded-2xl rounded-br-md text-white'
         }`}
         style={
@@ -153,7 +153,7 @@ export default function ChatWidget() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed z-[80] bottom-24 right-6 w-[320px] sm:w-[360px] h-[480px] flex flex-col glass-strong rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] overflow-hidden"
+              className="fixed z-[80] bottom-24 right-6 w-[320px] sm:w-[360px] h-[480px] flex flex-col bg-blush/90 glass-strong rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] overflow-hidden"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-white/20 shrink-0">
                 <div>
