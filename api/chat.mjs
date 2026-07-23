@@ -41,16 +41,16 @@ Location: Available globally — offices in Paris, London, and Tokyo.
 ${productList}`
 }
 
-export const handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' }
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' })
   }
 
   try {
-    const { message, history } = JSON.parse(event.body)
+    const { message, history } = req.body
 
     if (!message || !message.trim()) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Message is required' }) }
+      return res.status(400).json({ error: 'Message is required' })
     }
 
     const messages = [
@@ -71,9 +71,9 @@ export const handler = async (event) => {
 
     const reply = completion.choices[0]?.message?.content || 'I apologize, but I am unable to process that request at the moment. Please try again.'
 
-    return { statusCode: 200, body: JSON.stringify({ reply }) }
+    return res.status(200).json({ reply })
   } catch (error) {
     console.error('Chat function error:', error)
-    return { statusCode: 500, body: JSON.stringify({ error: 'Internal server error' }) }
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
