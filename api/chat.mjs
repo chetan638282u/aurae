@@ -7,6 +7,24 @@ const products = require('./products.json')
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
+const rateLimitMap = new Map()
+const WINDOW_MS = 60000
+const MAX_REQUESTS = 20
+
+function rateLimitCheck(ip) {
+  const now = Date.now()
+  if (!rateLimitMap.has(ip)) {
+    rateLimitMap.set(ip, [])
+  }
+  const timestamps = rateLimitMap.get(ip).filter((t) => now - t < WINDOW_MS)
+  if (timestamps.length >= MAX_REQUESTS) {
+    return true
+  }
+  timestamps.push(now)
+  rateLimitMap.set(ip, timestamps)
+  return false
+}
+
 const productKeywords = [
   'product', 'cream', 'serum', 'cleanser', 'moisturizer', 'treatment',
   'price', 'cost', 'recommend', 'suggestion', 'buy', 'purchase',
@@ -73,6 +91,11 @@ ${productList}`
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' })
+  }
+
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown'
+  if (rateLimitCheck(ip)) {
+    return res.status(429).json({ error: 'Too many requests. Please slow down.' })
   }
 
   try {

@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -12,8 +14,23 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') })
 const app = express()
 const port = 3001
 
-app.use(cors())
+const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:5175'
+
+app.use(cors({ origin: allowedOrigin }))
 app.use(express.json())
+app.use(helmet())
+
+const chatLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  message: { error: 'Too many requests. Please slow down.' },
+})
+
+const checkoutLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { error: 'Too many checkout attempts. Please try again later.' },
+})
 
 app.use(express.static(path.join(__dirname, '..', 'dist')))
 
@@ -58,7 +75,7 @@ async function sendToGoogleSheets(data) {
   }
 }
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', chatLimiter, async (req, res) => {
   try {
     const { message, history } = req.body
 
@@ -151,12 +168,31 @@ app.post('/api/loyalty-signup', (req, res) => {
   }
 })
 
-app.post('/api/checkout', (req, res) => {
+app.post('/api/checkout', checkoutLimiter, (req, res) => {
   try {
-    const { shipping, items, subtotal } = req.body
+    const { shipping, items } = req.body
 
     if (!shipping?.name || !shipping?.email || !items?.length) {
       return res.status(400).json({ error: 'Missing required fields' })
+    }
+
+    let products
+    try {
+      products = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'api', 'products.json'), 'utf-8'))
+    } catch {
+      return res.status(500).json({ error: 'Could not load product catalog' })
+    }
+
+    let subtotal = 0
+    for (const item of items) {
+      const product = products.find((p) => p.id === item.product?.id)
+      if (!product) {
+        return res.status(400).json({ error: `Invalid product: ${item.product?.name}` })
+      }
+      if (item.product.price !== product.price) {
+        return res.status(400).json({ error: `Price mismatch for ${product.name}` })
+      }
+      subtotal += product.price * item.quantity
     }
 
     saveOrder({ shipping, items, subtotal })
