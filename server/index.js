@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import Groq from 'groq-sdk'
-import { getSystemPrompt } from './data/knowledge.js'
+import { getSystemPrompt, needsProducts } from './data/knowledge.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') })
@@ -60,15 +60,18 @@ async function sendToGoogleSheets(data) {
 
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message, history, products } = req.body
+    const { message, history } = req.body
 
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message is required' })
     }
 
+    const lastUserMsg = [...(history || [])].reverse().find((m) => m.role === 'user')
+    const includeProducts = needsProducts(message) || needsProducts(lastUserMsg?.content)
+
     const messages = [
-      { role: 'system', content: getSystemPrompt(products) },
-      ...(history || []).slice(-10).map((msg) => ({
+      { role: 'system', content: getSystemPrompt(includeProducts) },
+      ...(history || []).slice(-6).map((msg) => ({
         role: msg.role === 'bot' ? 'assistant' : 'user',
         content: msg.content,
       })),
@@ -79,7 +82,7 @@ app.post('/api/chat', async (req, res) => {
       model: 'llama-3.3-70b-versatile',
       messages,
       temperature: 0.5,
-      max_tokens: 250,
+      max_tokens: 150,
     })
 
     const reply = completion.choices[0]?.message?.content || 'I apologize, but I am unable to process that request at the moment. Please try again.'

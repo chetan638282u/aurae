@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, MessageCircle } from 'lucide-react'
-import products from '../../data/products'
 
 function ChatMessage({ message }) {
   const isBot = message.role === 'bot'
@@ -97,7 +96,7 @@ export default function ChatWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history, products }),
+        body: JSON.stringify({ message: text, history }),
       })
 
       if (!res.ok) throw new Error('API error')

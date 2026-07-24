@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": "Auræ Radiance Renewal Serum",
+    "category": "Serums",
+    "price": 49,
+    "description": "A concentrated 15% Vitamin C serum stabilized with ferulic acid and vitamin E. Suitable for all skin types."
+  },
+  {
+    "id": 2,
+    "name": "Auræ Overnight Restorative Cream",
+    "category": "Moisturizers",
+    "price": 52,
+    "description": "A peptide-rich night cream for smoother, firmer skin. Suitable for normal to dry skin."
+  },
+  {
+    "id": 3,
+    "name": "Auræ Gentle Foaming Cleanser",
+    "category": "Cleansers",
+    "price": 42,
+    "description": "An amino-acid gel cleanser infused with rose water and aloe. Suitable for all skin types, especially sensitive."
+  },
+  {
+    "id": 4,
+    "name": "Auræ Brightening Eye Concentrate",
+    "category": "Treatments",
+    "price": 44,
+    "description": "A caffeine-infused eye treatment that depuffs, brightens, and smooths. Suitable for all skin types."
+  },
+  {
+    "id": 5,
+    "name": "Auræ Luminous Body Oil",
+    "category": "Treatments",
+    "price": 45,
+    "description": "A dry-body oil that hydrates without greasiness. Suitable for all skin types."
+  },
+  {
+    "id": 6,
+    "name": "Auræ Mineral Tinted SPF 50",
+    "category": "Moisturizers",
+    "price": 38,
+    "description": "A 100% mineral sunscreen with universal tint. Suitable for all skin types."
+  },
+  {
+    "id": 7,
+    "name": "Auræ Enzyme Exfoliating Mask",
+    "category": "Cleansers",
+    "price": 55,
+    "description": "A gentle resurfacing mask with papaya enzyme. Suitable for all skin types, including sensitive."
+  },
+  {
+    "id": 9,
+    "name": "Auræ Calming Barrier Serum",
+    "category": "Serums",
+    "price": 47,
+    "description": "A ceramide-rich serum that strengthens the barrier and calms redness. Ideal for sensitive or compromised skin."
+  },
+  {
+    "id": 10,
+    "name": "Auræ Dewy Gel Moisturizer",
+    "category": "Moisturizers",
+    "price": 54,
+    "description": "A feather-light gel-cream for 24-hour hydration. Perfect for oily and combination skin."
+  },
+  {
+    "id": 11,
+    "name": "Auræ Silk Oil Cleanser",
+    "category": "Cleansers",
+    "price": 48,
+    "description": "A luxurious oil-based first cleanser that dissolves makeup. Suitable for all skin types."
+  },
+  {
+    "id": 12,
+    "name": "Auræ Midnight Lip Mask",
+    "category": "Treatments",
+    "price": 36,
+    "description": "An overnight lip treatment that smooths and repairs. Suitable for all skin types."
+  },
+  {
+    "id": 8,
+    "name": "Auræ Retinol Night Serum",
+    "category": "Serums",
+    "price": 53,
+    "description": "An encapsulated retinol serum for fine lines and texture. Suitable for most skin types."
+  }
+]
