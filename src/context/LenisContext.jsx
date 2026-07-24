@@ -12,6 +12,8 @@ export function LenisProvider({ children }) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768
+
     const lenis = new Lenis({
       duration: 0.6,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -8 * t)),
@@ -19,9 +21,9 @@ export function LenisProvider({ children }) {
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.2,
-      syncTouch: true,
-      syncTouchLerp: 0.15,
+      syncTouch: !isMobile,
+      touchMultiplier: isMobile ? 0 : 1.2,
+      syncTouchLerp: isMobile ? 0 : 0.15,
       autoResize: true,
     })
 
