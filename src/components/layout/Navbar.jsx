@@ -50,7 +50,7 @@ export default function Navbar() {
       navigateTo('products')
     }
     if (lenis) {
-      lenis.scrollTo(href, { offset: -80, duration: 1.2 })
+      lenis.scrollTo(href, { offset: -80, duration: 0.7 })
     }
   }
 

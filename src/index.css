@@ -5,11 +5,12 @@
 @layer base {
   html {
     scroll-behavior: auto;
+    overflow: hidden;
   }
 
   body {
     @apply bg-blush font-sans text-charcoal antialiased;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   html.lenis {

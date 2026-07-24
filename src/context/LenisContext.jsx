@@ -18,10 +18,11 @@ export function LenisProvider({ children }) {
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.4,
-      touchMultiplier: 1.8,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
       syncTouch: true,
-      syncTouchLerp: 0.08,
+      syncTouchLerp: 0.15,
+      autoResize: true,
     })
 
     lenisRef.current = lenis
@@ -32,11 +33,9 @@ export function LenisProvider({ children }) {
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000)
     })
-    gsap.ticker.lagSmoothing(0)
 
     return () => {
       lenis.destroy()
-      gsap.ticker.lagSmoothing(0)
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])
