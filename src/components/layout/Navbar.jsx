@@ -42,6 +42,7 @@ export default function Navbar() {
 
   const scrollTo = (href) => {
     setMobileOpen(false)
+    setHovered(false)
     const hash = href.replace('#', '')
     if (hash === 'hero') {
       goToMain()
@@ -113,11 +114,11 @@ export default function Navbar() {
             <CartIcon />
             <div className="md:hidden relative">
               <button
-                className="text-charcoal"
-                onClick={() => setMobileOpen(!mobileOpen)}
+                onClick={() => { setMobileOpen(!mobileOpen); setHovered(false) }}
+                className="flex p-1 items-center justify-center text-charcoal/50 hover:text-rosegold transition-colors"
                 aria-label="Toggle menu"
               >
-                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
               <AnimatePresence>
                 {mobileOpen && (
