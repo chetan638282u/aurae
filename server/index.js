@@ -60,14 +60,14 @@ async function sendToGoogleSheets(data) {
 
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message, history } = req.body
+    const { message, history, products } = req.body
 
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message is required' })
     }
 
     const messages = [
-      { role: 'system', content: getSystemPrompt() },
+      { role: 'system', content: getSystemPrompt(products) },
       ...(history || []).slice(-10).map((msg) => ({
         role: msg.role === 'bot' ? 'assistant' : 'user',
         content: msg.content,
@@ -78,8 +78,8 @@ app.post('/api/chat', async (req, res) => {
     const completion = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages,
-      temperature: 0.7,
-      max_tokens: 600,
+      temperature: 0.5,
+      max_tokens: 250,
     })
 
     const reply = completion.choices[0]?.message?.content || 'I apologize, but I am unable to process that request at the moment. Please try again.'

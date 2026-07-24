@@ -1,21 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, MessageCircle } from 'lucide-react'
-
-const botResponses = [
-  "Thank you for reaching out to AURAE. Our Radiance Renewal Serum is one of our most popular products — it's formulated with 15% Vitamin C for a luminous, even-toned complexion. Would you like me to tell you more about it?",
-  "Great question! All AURAE products are cruelty-free, dermatologist-tested, and formulated with clean, clinically-proven ingredients. We never use parabens, sulfates, or synthetic fragrances.",
-  "I'd recommend starting with our Gentle Foaming Cleanser, then the Calming Barrier Serum, and finishing with the Dewy Gel Moisturizer. That combination works beautifully for most skin types.",
-  "Our Overnight Restorative Cream is perfect for dry or mature skin. It contains a pentapeptide complex and bakuchiol to support collagen while you sleep. Wake up to visibly smoother, firmer skin.",
-  "We offer free shipping on orders over $75, and all orders come with a 30-day satisfaction guarantee. If you're not completely happy, we'll refund your purchase — no questions asked.",
-  "The Mineral Tinted SPF 50 is a 100% mineral sunscreen with a universal tint that adapts to most skin tones. It's reef-safe and doubles as a lightweight tinted moisturizer.",
-  "You can layer the Brightening Eye Concentrate under your moisturizer morning and evening. The metal rollerball gives a gentle micro-massage that helps depuff. Use it consistently for best results!",
-  "Absolutely — all of our products are suitable for sensitive skin. I particularly recommend the Calming Barrier Serum, which is formulated with five essential ceramides and centella asiatica to soothe and repair.",
-]
-
-function getRandomResponse() {
-  return botResponses[Math.floor(Math.random() * botResponses.length)]
-}
+import products from '../../data/products'
 
 function ChatMessage({ message }) {
   const isBot = message.role === 'bot'
@@ -111,7 +97,7 @@ export default function ChatWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history }),
+        body: JSON.stringify({ message: text, history, products }),
       })
 
       if (!res.ok) throw new Error('API error')
@@ -119,7 +105,7 @@ export default function ChatWidget() {
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'bot', content: data.reply }])
     } catch {
-      setMessages((prev) => [...prev, { role: 'bot', content: getRandomResponse() }])
+      setMessages((prev) => [...prev, { role: 'bot', content: 'Sorry, I\'m having trouble connecting. Please try again in a moment.' }])
     }
 
     setIsTyping(false)

@@ -211,12 +211,43 @@ ${p.reviews.map((r) => `  - "${r.quote}" — ${r.name} (${r.rating}/5)`).join('\
 `).join('\n---\n')
 }
 
-export function getSystemPrompt() {
-  return `You are AURAE's personal brand assistant — warm, knowledgeable, and luxurious. Your tone is friendly, elegant, and approachable.
+export function getSystemPrompt(productsFromRequest) {
+  const products = productsFromRequest || []
+  if (products.length === 0) {
+    return `You are AURAE's personal brand assistant — warm, knowledgeable, and luxurious.
+CRITICAL RULES:
+- Answer in 1-3 short sentences maximum. Be direct, no fluff, no paragraphs.
+- If someone asks for a product recommendation without mentioning their skin type, ask "What's your skin type?" before suggesting.
+- Ask at most one follow-up question per reply to keep the conversation flowing.
 
-You represent AURAE, a luxury skincare brand. Answer questions ONLY using the product and brand information provided below. If a question falls outside what you know, politely say you'd be happy to connect them with the AURAE team for more details.
+=== BRAND INFO ===
+Name: ${brandInfo.name}
+Tagline: ${brandInfo.tagline}
+Philosophy: ${brandInfo.philosophy}
+Categories: ${brandInfo.categories.join(', ')}
+Commitments: ${brandInfo.commitments.join(', ')}
+Shipping & Returns: ${brandInfo.shipping}
+${brandInfo.location}`
+  }
 
-Be concise but warm. Recommend products when appropriate. Use the real product names, prices, and details. Never invent information.
+  const productList = products.map((p) =>
+    `Product: ${p.name}
+Category: ${p.category}
+Price: $${p.price}
+Description: ${p.description}
+Details: ${p.fullDescription}
+Reviews:
+${(p.reviews || []).map((r) => `  - "${r.quote}" — ${r.name} (${r.rating}/5)`).join('\n')}`
+  ).join('\n---\n')
+
+  return `You are AURAE's personal brand assistant — warm, knowledgeable, and luxurious.
+
+CRITICAL RULES:
+- Answer in 1-3 short sentences maximum. Be direct, no fluff, no paragraphs.
+- If someone asks for a product recommendation without mentioning their skin type, ask "What's your skin type?" before suggesting.
+- When recommending, map products to skin types based on their descriptions.
+- Ask at most one follow-up question per reply to keep the conversation flowing.
+- Always use real product names, prices, and details from the data below. Never invent products.
 
 === BRAND INFO ===
 Name: ${brandInfo.name}
@@ -227,17 +258,6 @@ Commitments: ${brandInfo.commitments.join(', ')}
 Shipping & Returns: ${brandInfo.shipping}
 ${brandInfo.location}
 
-=== WEBSITE LAYOUT ===
-The AURAE website is a single-page luxury brand site. Sections:
-${websiteLayout.sections.map((s) => `
-- ${s.name}${s.id ? ` (${s.id})` : ''}: ${s.description}`).join('')}
-
-Design System:
-- Colors: ${websiteLayout.design.colors.join(', ')}
-- Fonts: ${websiteLayout.design.fonts.join(', ')}
-- Style: ${websiteLayout.design.style}
-- Background: ${websiteLayout.design.background}
-
 === PRODUCTS ===
-${formatProducts()}`
+${productList}`
 }
