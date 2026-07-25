@@ -4,12 +4,14 @@ import { X, ChevronLeft, ChevronRight, Sparkles, ShoppingBag } from 'lucide-reac
 import { questions, getRecommendations } from '../../data/quiz'
 import products from '../../data/products'
 import { useCart } from '../../context/CartContext'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 export default function SkinQuiz({ isOpen, onClose }) {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState({})
   const [results, setResults] = useState(null)
   const { addItem, setIsOpen: openCart } = useCart()
+  const isMobile = useIsMobile()
 
   const totalQuestions = questions.length
 
@@ -43,7 +45,7 @@ export default function SkinQuiz({ isOpen, onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: isMobile ? 0 : 0.3 }}
           onClick={onClose}
           className="fixed inset-0 z-[90] flex items-center justify-center p-4"
           style={{ background: 'rgba(45, 42, 38, 0.4)' }}
@@ -52,7 +54,7 @@ export default function SkinQuiz({ isOpen, onClose }) {
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: isMobile ? 0 : 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             onClick={(e) => e.stopPropagation()}
             className="glass-strong rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
           >

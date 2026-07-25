@@ -2,11 +2,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Heart, ShoppingBag } from 'lucide-react'
 import { useWishlist } from '../../context/WishlistContext'
 import { useCart } from '../../context/CartContext'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import products from '../../data/products'
 
 export default function WishlistDrawer() {
   const { wishlist, isOpen, setIsOpen, removeFromWishlist } = useWishlist()
   const { addItem } = useCart()
+  const isMobile = useIsMobile()
 
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id))
 
@@ -23,7 +25,7 @@ export default function WishlistDrawer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: isMobile ? 0 : 0.3 }}
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 z-[70] bg-[rgba(45,42,38,0.3)]"
           />
@@ -32,7 +34,7 @@ export default function WishlistDrawer() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: isMobile ? 0 : 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="fixed top-0 right-0 z-[80] h-full w-full max-w-md bg-blush/90 glass-strong flex flex-col shadow-[-8px_0_32px_rgba(0,0,0,0.1)]"
           >
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/20 shrink-0">

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Star, Minus, Plus, ShoppingBag, Bell, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import ingredientData from '../../data/ingredients'
 import IngredientAccordion from './IngredientAccordion'
 
@@ -22,6 +23,7 @@ export default function ProductModal({ product, onClose }) {
   const [notifySent, setNotifySent] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const { addItem } = useCart()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     setQty(1)
@@ -66,14 +68,14 @@ export default function ProductModal({ product, onClose }) {
         opacity: product ? 1 : 0,
         pointerEvents: product ? 'auto' : 'none',
       }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: isMobile ? 0 : 0.3 }}
       onClick={onClose}
       className="fixed inset-0 z-[60] flex items-center justify-center px-4 md:px-8 pb-4 md:pb-8 pt-16 md:pt-24 bg-[rgba(45,42,38,0.3)]"
     >
       <motion.div
         initial={false}
         animate={{ opacity: product ? 1 : 0, y: product ? 0 : 20 }}
-        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: isMobile ? 0 : 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         onClick={(e) => e.stopPropagation()}
          className="bg-blush/90 glass-strong rounded-3xl w-full max-w-5xl h-[75vh] md:h-[calc(100vh-8rem)] relative"
       >
