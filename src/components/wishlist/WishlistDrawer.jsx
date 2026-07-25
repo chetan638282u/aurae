@@ -1,14 +1,23 @@
-import { motion, AnimatePresence } from 'framer-motion'
+﻿import { motion, AnimatePresence } from 'framer-motion'
 import { X, Heart, ShoppingBag } from 'lucide-react'
 import { useWishlist } from '../../context/WishlistContext'
 import { useCart } from '../../context/CartContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useEffect } from 'react'
 import products from '../../data/products'
 
 export default function WishlistDrawer() {
   const { wishlist, isOpen, setIsOpen, removeFromWishlist } = useWishlist()
   const { addItem } = useCart()
   const isMobile = useIsMobile()
+
+  useEffect(() => {
+    if (!isOpen) return
+    window.history.pushState(null, '', window.location.href)
+    const handleBack = () => setIsOpen(false)
+    window.addEventListener('popstate', handleBack)
+    return () => window.removeEventListener('popstate', handleBack)
+  }, [isOpen, setIsOpen])
 
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id))
 
@@ -35,8 +44,19 @@ export default function WishlistDrawer() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: isMobile ? 0 : 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            drag={isMobile ? 'x' : false}
+            dragConstraints={{ left: 0, right: 300 }}
+            dragElastic={{ left: 0, right: 0.4 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 100) setIsOpen(false)
+            }}
             className="fixed top-0 right-0 z-[80] h-full w-full max-w-md bg-blush/90 glass-strong flex flex-col shadow-[-8px_0_32px_rgba(0,0,0,0.1)]"
           >
+            {isMobile && (
+              <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10">
+                <div className="w-10 h-1 rounded-full bg-charcoal/20" />
+              </div>
+            )}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/20 shrink-0">
               <div className="flex items-center gap-3">
                 <Heart size={18} className="text-rosegold" />
@@ -97,7 +117,7 @@ export default function WishlistDrawer() {
 
                         <div className="flex items-center justify-between mt-3">
                           <span className="font-serif text-sm font-semibold text-charcoal">
-                            ${product.price}
+                            
                           </span>
                           <motion.button
                             whileHover={{ scale: 1.03 }}
