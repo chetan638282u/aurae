@@ -5,9 +5,18 @@ export default function ScrollOnLoad() {
   const lenis = useLenis()
 
   useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+  }, [])
+
+  useEffect(() => {
     if (!lenis) return
     const hash = window.location.hash
-    if (!hash) return
+    if (!hash) {
+      window.scrollTo(0, 0)
+      return
+    }
     const timer = setTimeout(() => {
       lenis.scrollTo(hash, { offset: -80, duration: 1.5 })
     }, 400)
