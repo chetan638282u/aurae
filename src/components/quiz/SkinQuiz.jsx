@@ -55,7 +55,8 @@ export default function SkinQuiz({ isOpen, onClose }) {
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: isMobile ? 0 : 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-blush/90 glass-strong rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            className="glass-strong rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            style={{ backgroundColor: 'rgba(255, 228, 225, 0.9)' }}
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
