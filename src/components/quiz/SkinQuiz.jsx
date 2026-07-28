@@ -47,8 +47,7 @@ export default function SkinQuiz({ isOpen, onClose }) {
           exit={{ opacity: 0 }}
           transition={{ duration: isMobile ? 0 : 0.3 }}
           onClick={onClose}
-          className="fixed inset-0 z-[90] flex items-center justify-center p-4"
-          style={{ background: 'rgba(45, 42, 38, 0.4)' }}
+          className="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-[rgba(45,42,38,0.3)]"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -56,7 +55,7 @@ export default function SkinQuiz({ isOpen, onClose }) {
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: isMobile ? 0 : 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="glass-strong rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            className="bg-blush/90 glass-strong rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
