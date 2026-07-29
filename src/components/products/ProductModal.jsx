@@ -251,12 +251,12 @@ export default function ProductModal({ product, onClose }) {
         </div>
       </motion.div>
 
-      {product && true && (
+      {product && (
         <motion.div
           initial={{ y: 80 }}
           animate={{ y: product ? 0 : 80 }}
           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed bottom-0 left-0 right-0 z-[65] glass border-t border-white/20 px-4 py-3 md:hidden flex items-center gap-3"
+          className="fixed bottom-0 left-0 right-0 z-[70] glass border-t border-white/20 px-4 py-3 md:hidden flex items-center gap-3"
         >
           <div className="flex items-center gap-3 glass rounded-full px-3 py-1.5">
             <button
