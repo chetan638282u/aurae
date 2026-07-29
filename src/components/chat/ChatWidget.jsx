@@ -161,7 +161,7 @@ export default function ChatWidget() {
                       AURAE
                     </span>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]" />
+                      <span className="w-2 h-2 rounded-full bg-[#B76E79] shadow-[0_0_6px_rgba(183,110,121,0.5)]" />
                       <span className="text-[10px] text-charcoal/40 tracking-wide">Online</span>
                     </div>
                   </div>
