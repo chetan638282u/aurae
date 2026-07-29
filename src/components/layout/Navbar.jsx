@@ -5,7 +5,6 @@ import CartIcon from '../cart/CartIcon'
 import WishlistIcon from '../wishlist/WishlistIcon'
 import SignInModal from './SignInModal'
 import { useLenis } from '../../context/LenisContext'
-import { useNavigation } from '../../context/NavigationContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useCart } from '../../context/CartContext'
 import { useWishlist } from '../../context/WishlistContext'
@@ -25,7 +24,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [showSignIn, setShowSignIn] = useState(false)
   const lenis = useLenis()
-  const { navigateTo, goToMain } = useNavigation()
   const isMobile = useIsMobile()
   const { isOpen: cartOpen } = useCart()
   const { isOpen: wishlistOpen } = useWishlist()
@@ -45,13 +43,6 @@ export default function Navbar() {
   const scrollTo = (href) => {
     setMobileOpen(false)
     setHovered(false)
-    const hash = href.replace('#', '')
-
-    if (hash === 'hero') {
-      history.replaceState(null, '', window.location.pathname)
-    } else {
-      history.replaceState(null, '', href)
-    }
 
     if (isMobile) {
       setTimeout(() => {
