@@ -2,13 +2,11 @@
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { useState, useEffect } from 'react'
-import CheckoutModal from '../checkout/CheckoutModal'
+import { useEffect } from 'react'
 import RoutineBuilder from './RoutineBuilder'
 
 export default function CartDrawer() {
-  const { isOpen, setIsOpen, items, totalItems, totalPrice, updateQuantity, removeItem } = useCart()
-  const [showCheckout, setShowCheckout] = useState(false)
+  const { isOpen, setIsOpen, items, totalItems, updateQuantity, removeItem, openCheckout } = useCart()
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -157,7 +155,7 @@ export default function CartDrawer() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowCheckout(true)}
+                    onClick={() => openCheckout()}
                     className="btn-primary w-full"
                   >
                     Checkout
@@ -168,11 +166,6 @@ export default function CartDrawer() {
           </>
         )}
       </AnimatePresence>
-
-      <CheckoutModal
-        isOpen={showCheckout}
-        onClose={() => setShowCheckout(false)}
-      />
     </>
   )
 }

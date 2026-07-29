@@ -1,4 +1,4 @@
-import { CartProvider } from './context/CartContext'
+import { CartProvider, useCart } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { NavigationProvider } from './context/NavigationContext'
 import { LenisProvider } from './context/LenisContext'
@@ -18,6 +18,37 @@ import CartDrawer from './components/cart/CartDrawer'
 import WishlistDrawer from './components/wishlist/WishlistDrawer'
 import PurchaseNotification from './components/reviews/PurchaseNotification'
 import ScrollOnLoad from './components/ScrollOnLoad'
+import CheckoutPage from './components/checkout/CheckoutPage'
+
+function HomePage() {
+  const { checkoutOpen } = useCart()
+  if (checkoutOpen) return <CheckoutPage />
+  return (
+    <>
+      <div className="relative z-10">
+        <Navbar />
+        <ScrollOnLoad />
+        <Hero />
+        <BrandStory />
+        <SectionDivider />
+        <ProductGrid />
+        <SectionDivider />
+        <SocialProofStrip />
+        <SectionDivider />
+        <ReviewsSection />
+        <SectionDivider />
+        <InquiryForm />
+        <SectionDivider />
+        <LoyaltySection />
+        <Footer />
+        <ChatWidget />
+      </div>
+      <CartDrawer />
+      <WishlistDrawer />
+      <PurchaseNotification />
+    </>
+  )
+}
 
 export default function App() {
   return (
@@ -27,27 +58,7 @@ export default function App() {
       <LenisProvider>
         <div className="relative">
           <MeshBackground />
-          <div className="relative z-10">
-            <Navbar />
-            <ScrollOnLoad />
-            <Hero />
-            <BrandStory />
-            <SectionDivider />
-            <ProductGrid />
-            <SectionDivider />
-            <SocialProofStrip />
-            <SectionDivider />
-            <ReviewsSection />
-            <SectionDivider />
-            <InquiryForm />
-            <SectionDivider />
-            <LoyaltySection />
-            <Footer />
-            <ChatWidget />
-          </div>
-          <CartDrawer />
-          <WishlistDrawer />
-          <PurchaseNotification />
+          <HomePage />
         </div>
       </LenisProvider>
       </NavigationProvider>
