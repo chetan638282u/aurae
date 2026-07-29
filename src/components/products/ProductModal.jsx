@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Star, Minus, Plus, ShoppingBag, Bell, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -209,7 +209,7 @@ export default function ProductModal({ product, onClose }) {
                         className="btn-primary shrink-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <Bell size={14} />
-                        {notifySent ? 'Notified ✓' : 'Notify Me'}
+                        {notifySent ? 'Notified âœ“' : 'Notify Me'}
                       </motion.button>
                     </div>
                   ) : (
@@ -236,7 +236,7 @@ export default function ProductModal({ product, onClose }) {
                         className="btn-primary flex-1 flex items-center justify-center gap-2"
                       >
                         <ShoppingBag size={16} />
-                        Add to Cart — ${(product.price * qty).toFixed(0)}
+                        Add to Cart â€” ${(product.price * qty).toFixed(0)}
                       </motion.button>
                     </>
                   )}
@@ -251,7 +251,7 @@ export default function ProductModal({ product, onClose }) {
         </div>
       </motion.div>
 
-      {product && product.stock > 0 && (
+      {product && true && (
         <motion.div
           initial={{ y: 80 }}
           animate={{ y: product ? 0 : 80 }}
@@ -279,10 +279,11 @@ export default function ProductModal({ product, onClose }) {
             className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2.5"
           >
             <ShoppingBag size={15} />
-            Add to Cart — ${(product.price * qty).toFixed(0)}
+            Add to Cart â€” ${(product.price * qty).toFixed(0)}
           </motion.button>
         </motion.div>
       )}
     </motion.div>
   )
 }
+
