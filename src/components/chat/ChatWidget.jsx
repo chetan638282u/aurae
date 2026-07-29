@@ -48,11 +48,12 @@ function TypingIndicator() {
     >
       <span className="text-[10px] font-medium tracking-wide text-charcoal/40 ml-1 mb-1">AURAE</span>
       <div className="glass rounded-2xl rounded-bl-md px-4 py-3">
-        <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '0ms' }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '150ms' }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '300ms' }} />
-        </div>
+        <span className="text-xs text-charcoal/50">typing</span>
+        <span className="inline-flex">
+          <span className="animate-pulse" style={{ animationDelay: '0ms' }}>.</span>
+          <span className="animate-pulse" style={{ animationDelay: '200ms' }}>.</span>
+          <span className="animate-pulse" style={{ animationDelay: '400ms' }}>.</span>
+        </span>
       </div>
     </motion.div>
   )
@@ -160,8 +161,8 @@ export default function ChatWidget() {
                       AURAE
                     </span>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      <span className="text-[10px] text-emerald-500 font-medium tracking-wide">Online</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-charcoal/30" />
+                      <span className="text-[10px] text-charcoal/40 tracking-wide">Online</span>
                     </div>
                   </div>
                 </div>
