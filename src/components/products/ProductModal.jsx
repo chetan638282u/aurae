@@ -122,29 +122,29 @@ export default function ProductModal({ product, onClose }) {
                   )}
                 </div>
 
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="flex items-center gap-3 glass rounded-full px-4 py-2">
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 glass rounded-full px-2.5 py-1.5">
                     <button
                       onClick={() => setQty(Math.max(1, qty - 1))}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
                     >
-                      <Minus size={14} />
+                      <Minus size={12} />
                     </button>
-                    <span className="text-sm font-medium text-charcoal w-6 text-center">{qty}</span>
+                    <span className="text-xs font-medium text-charcoal w-5 text-center">{qty}</span>
                     <button
                       onClick={() => setQty(qty + 1)}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
                     >
-                      <Plus size={14} />
+                      <Plus size={12} />
                     </button>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => addItem(product, qty)}
-                    className="btn-primary flex-1 flex items-center justify-center gap-2"
+                    className="btn-primary flex items-center justify-center gap-1.5 text-sm py-2 px-5"
                   >
-                    <ShoppingBag size={16} />
+                    <ShoppingBag size={14} />
                     Add to Cart — ${(product.price * qty).toFixed(0)}
                   </motion.button>
                 </div>
