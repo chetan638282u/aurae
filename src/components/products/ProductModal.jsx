@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { X, Star, Minus, Plus, ShoppingBag, Bell, ShieldCheck } from 'lucide-react'
+import { X, Star, Minus, Plus, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import ingredientData from '../../data/ingredients'
@@ -19,8 +19,6 @@ export default function ProductModal({ product, onClose }) {
   const [qty, setQty] = useState(1)
   const [rotateX, setRotateX] = useState(0)
   const [rotateY, setRotateY] = useState(0)
-  const [notifyEmail, setNotifyEmail] = useState('')
-  const [notifySent, setNotifySent] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const { addItem } = useCart()
   const isMobile = useIsMobile()
@@ -124,6 +122,33 @@ export default function ProductModal({ product, onClose }) {
                   )}
                 </div>
 
+                <div className="mt-4 flex items-center gap-4">
+                  <div className="flex items-center gap-3 glass rounded-full px-4 py-2">
+                    <button
+                      onClick={() => setQty(Math.max(1, qty - 1))}
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="text-sm font-medium text-charcoal w-6 text-center">{qty}</span>
+                    <button
+                      onClick={() => setQty(qty + 1)}
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => addItem(product, qty)}
+                    className="btn-primary flex-1 flex items-center justify-center gap-2"
+                  >
+                    <ShoppingBag size={16} />
+                    Add to Cart — ${(product.price * qty).toFixed(0)}
+                  </motion.button>
+                </div>
+
                 <div className="flex flex-col gap-4">
                   <h4 className="text-xs font-semibold tracking-widest uppercase text-charcoal/50">
                     Customer Reviews
@@ -191,56 +216,6 @@ export default function ProductModal({ product, onClose }) {
                   {product.fullDescription}
                 </p>
 
-                <div className="mt-6 hidden md:flex items-center gap-4">
-                  {product.stock === 0 ? (
-                    <div className="w-full flex items-center gap-3">
-                      <input
-                        type="email"
-                        value={notifyEmail}
-                        onChange={(e) => setNotifyEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        className="flex-1 bg-transparent border-b border-charcoal/20 py-2.5 text-sm text-charcoal outline-none transition-colors duration-300 focus:border-rosegold placeholder:text-charcoal/30"
-                      />
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => { if (notifyEmail.trim()) setNotifySent(true) }}
-                        disabled={notifySent || !notifyEmail.trim()}
-                        className="btn-primary shrink-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                      >
-                        <Bell size={14} />
-                        {notifySent ? 'Notified âœ“' : 'Notify Me'}
-                      </motion.button>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-3 glass rounded-full px-4 py-2">
-                        <button
-                          onClick={() => setQty(Math.max(1, qty - 1))}
-                          className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="text-sm font-medium text-charcoal w-6 text-center">{qty}</span>
-                        <button
-                          onClick={() => setQty(qty + 1)}
-                          className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => addItem(product, qty)}
-                        className="btn-primary flex-1 flex items-center justify-center gap-2"
-                      >
-                        <ShoppingBag size={16} />
-                        Add to Cart â€” ${(product.price * qty).toFixed(0)}
-                      </motion.button>
-                    </>
-                  )}
-                </div>
 
                 <div className="mt-8">
                   <IngredientAccordion data={ingredientData[product.id]} />
@@ -250,39 +225,6 @@ export default function ProductModal({ product, onClose }) {
           )}
         </div>
       </motion.div>
-
-      {product && product.stock > 0 && (
-        <motion.div
-          initial={{ y: 80 }}
-          animate={{ y: product ? 0 : 80 }}
-          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed bottom-0 left-0 right-0 z-[65] glass border-t border-white/20 px-4 py-3 md:hidden flex items-center gap-3"
-        >
-          <div className="flex items-center gap-3 glass rounded-full px-3 py-1.5">
-            <button
-              onClick={() => setQty(Math.max(1, qty - 1))}
-              className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60"
-            >
-              <Minus size={12} />
-            </button>
-            <span className="text-sm font-medium text-charcoal w-5 text-center">{qty}</span>
-            <button
-              onClick={() => setQty(qty + 1)}
-              className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60"
-            >
-              <Plus size={12} />
-            </button>
-          </div>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={() => addItem(product, qty)}
-            className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2.5"
-          >
-            <ShoppingBag size={15} />
-            Add to Cart â€” ${(product.price * qty).toFixed(0)}
-          </motion.button>
-        </motion.div>
-      )}
     </motion.div>
   )
 }
