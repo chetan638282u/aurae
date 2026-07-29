@@ -1,16 +1,24 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, MessageCircle } from 'lucide-react'
+import { X, Send, MessageCircle, Bot } from 'lucide-react'
+
+function formatTime(date) {
+  return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+}
 
 function ChatMessage({ message }) {
   const isBot = message.role === 'bot'
+  const time = message.time || new Date()
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`flex ${isBot ? 'justify-start' : 'justify-end'} mb-3`}
+      className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} mb-3`}
     >
+      <span className={`text-[10px] font-medium tracking-wide mb-1 ${isBot ? 'text-charcoal/40 ml-1' : 'text-charcoal/40 mr-1'}`}>
+        {isBot ? 'AURAE' : 'You'}
+      </span>
       <div
         className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
           isBot
@@ -25,6 +33,7 @@ function ChatMessage({ message }) {
       >
         {message.content}
       </div>
+      <span className="text-[9px] text-charcoal/30 mt-0.5 px-1">{formatTime(time)}</span>
     </motion.div>
   )
 }
@@ -35,13 +44,14 @@ function TypingIndicator() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="flex justify-start mb-3"
+      className="flex flex-col items-start mb-3"
     >
+      <span className="text-[10px] font-medium tracking-wide text-charcoal/40 ml-1 mb-1">AURAE</span>
       <div className="glass rounded-2xl rounded-bl-md px-4 py-3">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '0ms' }} />
-          <span className="w-2 h-2 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '150ms' }} />
-          <span className="w-2 h-2 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '300ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '0ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '150ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-rosegold/40 animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
       </div>
     </motion.div>
@@ -67,7 +77,7 @@ export default function ChatWidget() {
       setHasOpened(true)
       setShowPulse(false)
       const timer = setTimeout(() => {
-        setMessages([{ role: 'bot', content: 'Hi! Welcome to AURAE. How can I help you today?' }])
+        setMessages([{ role: 'bot', content: 'Hi! Welcome to AURAE. How can I help you today?', time: new Date() }])
       }, 400)
       return () => clearTimeout(timer)
     }
@@ -102,9 +112,9 @@ export default function ChatWidget() {
       if (!res.ok) throw new Error('API error')
 
       const data = await res.json()
-      setMessages((prev) => [...prev, { role: 'bot', content: data.reply }])
+      setMessages((prev) => [...prev, { role: 'bot', content: data.reply, time: new Date() }])
     } catch {
-      setMessages((prev) => [...prev, { role: 'bot', content: 'Sorry, I\'m having trouble connecting. Please try again in a moment.' }])
+      setMessages((prev) => [...prev, { role: 'bot', content: 'Sorry, I\'m having trouble connecting. Please try again in a moment.', time: new Date() }])
     }
 
     setIsTyping(false)
@@ -114,7 +124,7 @@ export default function ChatWidget() {
     const text = inputValue.trim()
     if (!text || isTyping) return
 
-    setMessages((prev) => [...prev, { role: 'user', content: text }])
+    setMessages((prev) => [...prev, { role: 'user', content: text, time: new Date() }])
     setInputValue('')
     setIsTyping(true)
 
@@ -141,11 +151,19 @@ export default function ChatWidget() {
               className="fixed z-[80] bottom-24 right-6 w-[320px] sm:w-[360px] h-[480px] flex flex-col bg-blush/90 glass-strong rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] overflow-hidden"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-white/20 shrink-0">
-                <div>
-                  <span className="font-serif text-lg font-bold tracking-wide" style={{ color: '#B76E79' }}>
-                    AURAE
-                  </span>
-                  <p className="text-[11px] text-charcoal/50 font-light tracking-wide mt-0.5">Ask us anything</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full glass flex items-center justify-center" style={{ color: '#B76E79' }}>
+                    <Bot size={18} />
+                  </div>
+                  <div>
+                    <span className="font-serif text-base font-bold tracking-wide" style={{ color: '#B76E79' }}>
+                      AURAE
+                    </span>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span className="text-[10px] text-emerald-500 font-medium tracking-wide">Online</span>
+                    </div>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
