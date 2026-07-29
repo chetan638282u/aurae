@@ -19,6 +19,8 @@ export default function ScrollOnLoad() {
       window.scrollTo(0, y)
       setTimeout(() => window.scrollTo(0, y), 350)
       sessionStorage.removeItem('scrollPos')
+    } else {
+      window.scrollTo(0, 0)
     }
   }, [])
 
@@ -42,7 +44,7 @@ export default function ScrollOnLoad() {
     if (restored.current) return
     const hash = window.location.hash
     if (!hash) {
-      window.scrollTo(0, 0)
+      lenis.scrollTo(0, { immediate: true })
       return
     }
     const timer = setTimeout(() => {
