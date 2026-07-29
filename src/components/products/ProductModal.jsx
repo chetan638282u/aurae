@@ -70,14 +70,14 @@ export default function ProductModal({ product, onClose }) {
       }}
       transition={{ duration: isMobile ? 0 : 0.3 }}
       onClick={onClose}
-      className="fixed inset-0 z-[60] flex items-center justify-center px-4 md:px-8 pb-4 md:pb-8 pt-16 md:pt-24 bg-[rgba(45,42,38,0.3)]"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8 bg-[rgba(45,42,38,0.3)]"
     >
       <motion.div
         initial={false}
         animate={{ opacity: product ? 1 : 0, y: product ? 0 : 20 }}
         transition={{ duration: isMobile ? 0 : 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         onClick={(e) => e.stopPropagation()}
-         className="bg-blush/90 glass-strong rounded-3xl w-full max-w-5xl h-[75vh] md:h-[calc(100vh-8rem)] relative"
+         className="bg-blush/90 glass-strong rounded-3xl w-full max-w-5xl max-h-[85vh] md:max-h-[calc(100vh-8rem)] overflow-y-auto relative"
       >
         <button
           onClick={onClose}
