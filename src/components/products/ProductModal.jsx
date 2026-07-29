@@ -122,29 +122,29 @@ export default function ProductModal({ product, onClose }) {
                   )}
                 </div>
 
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 glass rounded-full px-2.5 py-1.5">
+                <div className="mt-4 flex items-center gap-3">
+                  <div className="flex items-center gap-2 glass rounded-full px-3 py-1.5">
                     <button
                       onClick={() => setQty(Math.max(1, qty - 1))}
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
                     >
-                      <Minus size={12} />
+                      <Minus size={13} />
                     </button>
-                    <span className="text-xs font-medium text-charcoal w-5 text-center">{qty}</span>
+                    <span className="text-sm font-medium text-charcoal w-6 text-center">{qty}</span>
                     <button
                       onClick={() => setQty(qty + 1)}
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/60 hover:text-rosegold transition-colors"
                     >
-                      <Plus size={12} />
+                      <Plus size={13} />
                     </button>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => addItem(product, qty)}
-                    className="btn-primary flex items-center justify-center gap-1.5 text-sm py-2 px-5"
+                    className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2"
                   >
-                    <ShoppingBag size={14} />
+                    <ShoppingBag size={15} />
                     Add to Cart — ${(product.price * qty).toFixed(0)}
                   </motion.button>
                 </div>
