@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import { X, Star, Minus, Plus, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
+import { useRouter } from '../../context/Router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import ingredientData from '../../data/ingredients'
 import IngredientAccordion from './IngredientAccordion'
@@ -21,6 +22,7 @@ export default function ProductModal({ product, onClose }) {
   const [rotateY, setRotateY] = useState(0)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const { addItem } = useCart()
+  const { navigate } = useRouter()
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -141,7 +143,10 @@ export default function ProductModal({ product, onClose }) {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => addItem(product, qty)}
+                    onClick={() => {
+                      addItem(product, qty)
+                      navigate('/cart')
+                    }}
                     className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2"
                   >
                     <ShoppingBag size={15} />
@@ -228,4 +233,3 @@ export default function ProductModal({ product, onClose }) {
     </motion.div>
   )
 }
-

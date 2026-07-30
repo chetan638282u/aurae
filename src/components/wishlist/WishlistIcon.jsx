@@ -1,12 +1,14 @@
 import { Heart } from 'lucide-react'
 import { useWishlist } from '../../context/WishlistContext'
+import { useRouter } from '../../context/Router'
 
 export default function WishlistIcon() {
-  const { wishlistCount, setIsOpen } = useWishlist()
+  const { wishlistCount } = useWishlist()
+  const { navigate } = useRouter()
 
   return (
     <button
-      onClick={() => setIsOpen(true)}
+      onClick={() => navigate('/wishlist')}
       className="relative p-2 text-charcoal/70 hover:text-rosegold transition-colors duration-300"
       aria-label="Open wishlist"
     >

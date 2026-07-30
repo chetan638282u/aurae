@@ -1,5 +1,6 @@
-import { CartProvider, useCart } from './context/CartContext'
+import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
+import { RouterProvider, useRouter } from './context/Router'
 import { NavigationProvider } from './context/NavigationContext'
 import { LenisProvider } from './context/LenisContext'
 import MeshBackground from './components/MeshBackground'
@@ -14,14 +15,13 @@ import InquiryForm from './components/contact/InquiryForm'
 import LoyaltySection from './components/layout/LoyaltySection'
 import Footer from './components/layout/Footer'
 import ChatWidget from './components/chat/ChatWidget'
-import CartDrawer from './components/cart/CartDrawer'
-import WishlistDrawer from './components/wishlist/WishlistDrawer'
 import PurchaseNotification from './components/reviews/PurchaseNotification'
 import ScrollOnLoad from './components/ScrollOnLoad'
+import CartPage from './components/cart/CartPage'
+import WishlistPage from './components/wishlist/WishlistPage'
 import CheckoutPage from './components/checkout/CheckoutPage'
 
 function HomePage() {
-  const { checkoutOpen } = useCart()
   return (
     <>
       <div className="relative z-10">
@@ -42,29 +42,41 @@ function HomePage() {
         <Footer />
         <ChatWidget />
       </div>
-      <CartDrawer />
-      <WishlistDrawer />
       <PurchaseNotification />
-      <div className={`fixed inset-0 z-50 ${checkoutOpen ? '' : 'opacity-0 pointer-events-none'}`}>
-        <CheckoutPage />
-      </div>
     </>
   )
 }
 
+function PageRouter() {
+  const { path } = useRouter()
+
+  if (path === '/cart') {
+    return <CartPage />
+  }
+  if (path === '/wishlist') {
+    return <WishlistPage />
+  }
+  if (path === '/checkout') {
+    return <CheckoutPage />
+  }
+  return <HomePage />
+}
+
 export default function App() {
   return (
-    <CartProvider>
-      <WishlistProvider>
-      <NavigationProvider>
-      <LenisProvider>
-        <div className="relative">
-          <MeshBackground />
-          <HomePage />
-        </div>
-      </LenisProvider>
-      </NavigationProvider>
-      </WishlistProvider>
-    </CartProvider>
+    <RouterProvider>
+      <CartProvider>
+        <WishlistProvider>
+        <NavigationProvider>
+        <LenisProvider>
+          <div className="relative">
+            <MeshBackground />
+            <PageRouter />
+          </div>
+        </LenisProvider>
+        </NavigationProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </RouterProvider>
   )
 }

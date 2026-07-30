@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion'
 import { ShoppingBag } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
+import { useRouter } from '../../context/Router'
 
 export default function CartIcon() {
-  const { totalItems, setIsOpen } = useCart()
+  const { totalItems } = useCart()
+  const { navigate } = useRouter()
 
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setIsOpen(true)}
+      onClick={() => navigate('/cart')}
       className="relative p-1 flex items-center justify-center text-charcoal/70 hover:text-rosegold transition-colors duration-300"
       aria-label="Open cart"
     >

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, CreditCard, Truck, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, CreditCard, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
+import { useRouter } from '../../context/Router'
 import PaymentForm from './PaymentForm'
 import Toast from '../contact/Toast'
 
@@ -10,7 +11,8 @@ const initialShipping = {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal, clearCart, closeCheckout, checkoutOpen } = useCart()
+  const { items, subtotal, clearCart } = useCart()
+  const { navigate } = useRouter()
   const [step, setStep] = useState(1)
   const [shipping, setShipping] = useState(initialShipping)
   const [errors, setErrors] = useState({})
@@ -21,6 +23,19 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [toast, setToast] = useState({ visible: false, message: '', type: 'success' })
+
+  useEffect(() => {
+    setStep(1)
+    setShipping(initialShipping)
+    setErrors({})
+    setPaymentMethod('card')
+    setCard({ number: '', expiry: '', cvv: '', name: '' })
+    setUpiId('')
+    setBank('')
+    setDone(false)
+    setSubmitting(false)
+    setToast({ visible: false, message: '', type: 'success' })
+  }, [])
 
   const handleShippingChange = (e) => {
     const { name, value } = e.target
@@ -68,31 +83,9 @@ export default function CheckoutPage() {
   const shippingCost = subtotal >= 75 ? 0 : 9.99
   const total = subtotal + shippingCost
 
-  useEffect(() => {
-    if (!checkoutOpen) return
-    setStep(1)
-    setShipping(initialShipping)
-    setErrors({})
-    setPaymentMethod('card')
-    setCard({ number: '', expiry: '', cvv: '', name: '' })
-    setUpiId('')
-    setBank('')
-    setDone(false)
-    setSubmitting(false)
-    setToast({ visible: false, message: '', type: 'success' })
-  }, [checkoutOpen])
-
-  useEffect(() => {
-    if (!checkoutOpen) return
-    window.history.pushState(null, '', window.location.href)
-    const handleBack = () => closeCheckout()
-    window.addEventListener('popstate', handleBack)
-    return () => window.removeEventListener('popstate', handleBack)
-  }, [checkoutOpen, closeCheckout])
-
   if (done) {
     return (
-      <div className="fixed inset-0 overflow-y-auto overflow-x-hidden bg-blush/90 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-blush/90 flex items-center justify-center px-6 pt-24">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -107,7 +100,7 @@ export default function CheckoutPage() {
             <span className="text-[#B76E79] font-medium">{shipping.email}</span>.
           </p>
           <button
-            onClick={closeCheckout}
+            onClick={() => navigate('/')}
             className="btn-primary inline-flex"
           >
             Continue Shopping
@@ -118,14 +111,14 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-y-auto overflow-x-hidden bg-blush/90">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-blush/90 pt-24 pb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <button
-          onClick={closeCheckout}
+          onClick={() => navigate('/cart')}
           className="flex items-center gap-2 text-sm text-charcoal/50 hover:text-[#B76E79] transition-colors duration-300 mb-6"
         >
           <ArrowLeft size={16} />
-          Back to Shopping
+          Back to Cart
         </button>
 
         <div className="flex flex-col lg:flex-row gap-8">

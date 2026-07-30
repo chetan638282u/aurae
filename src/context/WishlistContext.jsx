@@ -13,7 +13,6 @@ function loadWishlist() {
 
 export function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState(loadWishlist)
-  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(wishlist))
@@ -45,8 +44,6 @@ export function WishlistProvider({ children }) {
         removeFromWishlist,
         isWishlisted,
         wishlistCount,
-        isOpen,
-        setIsOpen,
       }}
     >
       {children}

@@ -6,8 +6,7 @@ import WishlistIcon from '../wishlist/WishlistIcon'
 import SignInModal from './SignInModal'
 import { useLenis } from '../../context/LenisContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { useCart } from '../../context/CartContext'
-import { useWishlist } from '../../context/WishlistContext'
+import { useRouter } from '../../context/Router'
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -25,8 +24,8 @@ export default function Navbar() {
   const [showSignIn, setShowSignIn] = useState(false)
   const lenis = useLenis()
   const isMobile = useIsMobile()
-  const { isOpen: cartOpen } = useCart()
-  const { isOpen: wishlistOpen } = useWishlist()
+  const { path: pagePath } = useRouter()
+  const isHome = pagePath === '/'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +37,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const isCompact = pastHero && !hovered && !mobileOpen && !cartOpen && !wishlistOpen
+  const isCompact = isHome && pastHero && !hovered && !mobileOpen
 
   const scrollTo = (href) => {
     setMobileOpen(false)

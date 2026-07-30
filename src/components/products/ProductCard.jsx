@@ -2,10 +2,12 @@ import { motion } from 'framer-motion'
 import { Plus, Heart } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useWishlist } from '../../context/WishlistContext'
+import { useRouter } from '../../context/Router'
 
 export default function ProductCard({ product, index, onClick }) {
   const { addItem } = useCart()
   const { toggleWishlist, isWishlisted } = useWishlist()
+  const { navigate } = useRouter()
   const wishlisted = isWishlisted(product.id)
 
   return (
@@ -59,6 +61,7 @@ export default function ProductCard({ product, index, onClick }) {
             e.stopPropagation()
             addItem(product)
             if (wishlisted) toggleWishlist(product.id)
+            navigate('/cart')
           }}
           className="absolute bottom-3 right-3 w-10 h-10 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{ background: '#B76E79', color: 'white' }}
