@@ -63,7 +63,6 @@ export function CartProvider({ children }) {
 
   const closeCheckout = useCallback(() => {
     setCheckoutOpen(false)
-    setIsOpen(true)
   }, [])
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
