@@ -13,6 +13,10 @@ export function LenisProvider({ children }) {
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768
+    if (isMobile) {
+      setReady(true)
+      return
+    }
 
     const lenis = new Lenis({
       duration: 0.6,
