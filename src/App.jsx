@@ -45,7 +45,7 @@ function HomePage() {
       <CartDrawer />
       <WishlistDrawer />
       <PurchaseNotification />
-      <div className={`fixed inset-0 z-50 ${checkoutOpen ? '' : 'invisible pointer-events-none'}`}>
+      <div className={`fixed inset-0 ${checkoutOpen ? 'z-50' : '-z-10'}`}>
         <CheckoutPage />
       </div>
     </>
