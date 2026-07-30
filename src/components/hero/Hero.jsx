@@ -91,9 +91,9 @@ export default function Hero() {
             <motion.div
               key={orb.i}
               ref={(el) => { orbsRef.current[orb.i] = el }}
-              initial={{ opacity: 0, scale: 0 }}
+              initial={isMobile ? false : { opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.5, delay: orb.delay, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: isMobile ? 0 : 1.5, delay: isMobile ? 0 : orb.delay, ease: [0.25, 0.1, 0.25, 1] }}
               className={`absolute rounded-full pointer-events-none ${orb.anim}`}
               style={{
                 width: orb.w,
@@ -143,9 +143,9 @@ export default function Hero() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={isMobile ? false : { opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: isMobile ? 0 : 1.2, delay: isMobile ? 0 : 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="w-full max-w-3xl aspect-square flex items-center justify-center relative z-10 shrink-0"
           >
             <img
