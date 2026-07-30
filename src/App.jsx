@@ -4,6 +4,7 @@ import { RouterProvider, useRouter } from './context/Router'
 import { NavigationProvider } from './context/NavigationContext'
 import { LenisProvider } from './context/LenisContext'
 import MeshBackground from './components/MeshBackground'
+import { useIsMobile } from './hooks/useIsMobile'
 import SectionDivider from './components/SectionDivider'
 import Navbar from './components/layout/Navbar'
 import Hero from './components/hero/Hero'
@@ -49,17 +50,18 @@ function HomePage() {
 
 function PageRouter() {
   const { path } = useRouter()
+  const isMobile = useIsMobile()
+  const showMesh = !isMobile || path === '/'
 
-  if (path === '/cart') {
-    return <CartPage />
-  }
-  if (path === '/wishlist') {
-    return <WishlistPage />
-  }
-  if (path === '/checkout') {
-    return <CheckoutPage />
-  }
-  return <HomePage />
+  return (
+    <>
+      {showMesh && <MeshBackground />}
+      {path === '/cart' ? <CartPage /> :
+       path === '/wishlist' ? <WishlistPage /> :
+       path === '/checkout' ? <CheckoutPage /> :
+       <HomePage />}
+    </>
+  )
 }
 
 export default function App() {
@@ -70,7 +72,6 @@ export default function App() {
         <NavigationProvider>
         <LenisProvider>
           <div className="relative">
-            <MeshBackground />
             <PageRouter />
           </div>
         </LenisProvider>
