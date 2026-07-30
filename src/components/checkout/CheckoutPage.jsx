@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, CreditCard, Truck, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -67,6 +67,13 @@ export default function CheckoutPage() {
 
   const shippingCost = subtotal >= 75 ? 0 : 9.99
   const total = subtotal + shippingCost
+
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href)
+    const handleBack = () => closeCheckout()
+    window.addEventListener('popstate', handleBack)
+    return () => window.removeEventListener('popstate', handleBack)
+  }, [closeCheckout])
 
   if (done) {
     return (
