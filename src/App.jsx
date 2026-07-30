@@ -55,7 +55,7 @@ function PageRouter() {
 
   return (
     <>
-      {showMesh && <MeshBackground />}
+      <MeshBackground active={showMesh} />
       {path === '/cart' ? <CartPage /> :
        path === '/wishlist' ? <WishlistPage /> :
        path === '/checkout' ? <CheckoutPage /> :

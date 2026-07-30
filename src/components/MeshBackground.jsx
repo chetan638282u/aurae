@@ -2,16 +2,35 @@ import { useEffect, useRef } from 'react'
 
 const COLORS = ['#FFE4E1', '#F5E6D3', '#E6E0F0']
 
-export default function MeshBackground() {
+export default function MeshBackground({ active = true }) {
   const canvasRef = useRef(null)
+  const activeRef = useRef(active)
+  const pausedRef = useRef(false)
+  const rafRef = useRef(0)
+  const drawRef = useRef(null)
+
+  useEffect(() => {
+    activeRef.current = active
+    if (active) {
+      pausedRef.current = false
+      if (drawRef.current && !rafRef.current) {
+        drawRef.current()
+      }
+    } else {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = 0
+      const canvas = canvasRef.current
+      if (canvas) {
+        canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
+      }
+    }
+  }, [active])
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
-    let animationId
-    let isActive = true
     let isVisible = true
     let pauseTimer
 
@@ -23,22 +42,26 @@ export default function MeshBackground() {
     window.addEventListener('resize', resize)
 
     const onScroll = () => {
-      if (!isActive) {
-        isActive = true
-        if (!animationId) draw()
+      if (pausedRef.current && activeRef.current) {
+        pausedRef.current = false
+        if (!rafRef.current) draw()
       }
       clearTimeout(pauseTimer)
-      pauseTimer = setTimeout(() => { isActive = false }, 2000)
+      pauseTimer = setTimeout(() => {
+        pausedRef.current = true
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = 0
+      }, 2000)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    pauseTimer = setTimeout(() => { isActive = false }, 2000)
+    pauseTimer = setTimeout(() => { pausedRef.current = true }, 2000)
 
     const onVisibility = () => {
       isVisible = !document.hidden
-      if (isVisible && !animationId) draw()
-      else if (!isVisible && animationId) {
-        cancelAnimationFrame(animationId)
-        animationId = 0
+      if (isVisible && !rafRef.current && activeRef.current) draw()
+      else if (!isVisible && rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = 0
       }
     }
     document.addEventListener('visibilitychange', onVisibility)
@@ -54,8 +77,8 @@ export default function MeshBackground() {
     ]
 
     const draw = () => {
-      if (!isActive || !isVisible) {
-        animationId = 0
+      if (!activeRef.current || pausedRef.current || !isVisible) {
+        rafRef.current = 0
         return
       }
 
@@ -85,13 +108,15 @@ export default function MeshBackground() {
         ctx.fill()
       }
 
-      animationId = requestAnimationFrame(draw)
+      rafRef.current = requestAnimationFrame(draw)
     }
 
-    draw()
+    drawRef.current = draw
+
+    if (activeRef.current) draw()
 
     return () => {
-      cancelAnimationFrame(animationId)
+      cancelAnimationFrame(rafRef.current)
       clearTimeout(pauseTimer)
       window.removeEventListener('resize', resize)
       window.removeEventListener('scroll', onScroll)
