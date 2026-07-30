@@ -24,7 +24,7 @@ function HomePage() {
   const { checkoutOpen } = useCart()
   return (
     <>
-      <div className="relative z-10" style={{ display: checkoutOpen ? 'none' : '' }}>
+      <div className="relative z-10">
         <Navbar />
         <ScrollOnLoad />
         <Hero />

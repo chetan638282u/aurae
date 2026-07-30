@@ -77,7 +77,7 @@ export default function CheckoutPage() {
 
   if (done) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6">
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-blush/90 flex items-center justify-center px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -103,7 +103,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-blush/90">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={closeCheckout}
