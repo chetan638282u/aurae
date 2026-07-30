@@ -22,10 +22,9 @@ import CheckoutPage from './components/checkout/CheckoutPage'
 
 function HomePage() {
   const { checkoutOpen } = useCart()
-  if (checkoutOpen) return <CheckoutPage />
   return (
     <>
-      <div className="relative z-10">
+      <div className="relative z-10" style={{ display: checkoutOpen ? 'none' : '' }}>
         <Navbar />
         <ScrollOnLoad />
         <Hero />
@@ -46,6 +45,7 @@ function HomePage() {
       <CartDrawer />
       <WishlistDrawer />
       <PurchaseNotification />
+      {checkoutOpen && <CheckoutPage />}
     </>
   )
 }
