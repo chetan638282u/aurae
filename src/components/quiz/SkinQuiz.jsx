@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Sparkles, ShoppingBag } from 'lucide-react'
+import { X, ChevronLeft, Sparkles, ShoppingBag } from 'lucide-react'
 import { questions, getRecommendations } from '../../data/quiz'
 import products from '../../data/products'
 import { useCart } from '../../context/CartContext'
@@ -13,22 +13,37 @@ export default function SkinQuiz({ isOpen, onClose }) {
   const { addItem, setIsOpen: openCart } = useCart()
   const isMobile = useIsMobile()
 
+  const stepRef = useRef(0)
+  const answersRef = useRef({})
+  stepRef.current = step
+  answersRef.current = answers
+
   const totalQuestions = questions.length
 
   const selectAnswer = useCallback((questionId, value) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }))
-    if (step < totalQuestions - 1) {
-      setTimeout(() => setStep((s) => s + 1), 300)
+    const updated = { ...answersRef.current, [questionId]: value }
+    answersRef.current = updated
+    setAnswers(updated)
+
+    if (Object.keys(updated).length < totalQuestions) {
+      if (Object.keys(updated).length > stepRef.current) {
+        setTimeout(() => {
+          stepRef.current = Object.keys(answersRef.current).length
+          setStep(stepRef.current)
+        }, 300)
+      }
     } else {
-      const recs = getRecommendations({ ...answers, [questionId]: value }, products)
+      const recs = getRecommendations(updated, products)
       setResults(recs)
     }
-  }, [step, answers, totalQuestions])
+  }, [totalQuestions])
 
   const reset = () => {
     setStep(0)
     setAnswers({})
     setResults(null)
+    stepRef.current = 0
+    answersRef.current = {}
   }
 
   const handleAddAll = () => {
