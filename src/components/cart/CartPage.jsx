@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -7,6 +8,8 @@ import RoutineBuilder from './RoutineBuilder'
 export default function CartPage() {
   const { items, totalItems, updateQuantity, removeItem, subtotal } = useCart()
   const { navigate } = useRouter()
+
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   return (
     <div className="min-h-screen pt-3 md:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto bg-blush/90 md:bg-transparent">

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Heart, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useWishlist } from '../../context/WishlistContext'
@@ -9,6 +10,8 @@ export default function WishlistPage() {
   const { wishlist, removeFromWishlist } = useWishlist()
   const { addItem } = useCart()
   const { navigate } = useRouter()
+
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id))
 
