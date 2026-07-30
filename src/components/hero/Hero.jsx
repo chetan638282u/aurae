@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SkinQuiz from '../quiz/SkinQuiz'
 import { useLenis } from '../../context/LenisContext'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -18,6 +19,7 @@ export default function Hero() {
   const orbsRef = useRef([])
   const [showQuiz, setShowQuiz] = useState(false)
   const lenis = useLenis()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const section = sectionRef.current
@@ -211,9 +213,9 @@ export default function Hero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: isMobile ? 0 : 1, delay: isMobile ? 0 : 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-center shrink-0 mt-4"
         >
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-charcoal">
