@@ -10,7 +10,7 @@ const initialShipping = {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal, clearCart, closeCheckout } = useCart()
+  const { items, subtotal, clearCart, closeCheckout, checkoutOpen } = useCart()
   const [step, setStep] = useState(1)
   const [shipping, setShipping] = useState(initialShipping)
   const [errors, setErrors] = useState({})
@@ -69,11 +69,26 @@ export default function CheckoutPage() {
   const total = subtotal + shippingCost
 
   useEffect(() => {
+    if (!checkoutOpen) return
+    setStep(1)
+    setShipping(initialShipping)
+    setErrors({})
+    setPaymentMethod('card')
+    setCard({ number: '', expiry: '', cvv: '', name: '' })
+    setUpiId('')
+    setBank('')
+    setDone(false)
+    setSubmitting(false)
+    setToast({ visible: false, message: '', type: 'success' })
+  }, [checkoutOpen])
+
+  useEffect(() => {
+    if (!checkoutOpen) return
     window.history.pushState(null, '', window.location.href)
     const handleBack = () => closeCheckout()
     window.addEventListener('popstate', handleBack)
     return () => window.removeEventListener('popstate', handleBack)
-  }, [closeCheckout])
+  }, [checkoutOpen, closeCheckout])
 
   if (done) {
     return (
