@@ -9,7 +9,7 @@ export default function CartPage() {
   const { navigate } = useRouter()
 
   return (
-    <div className="min-h-screen pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto bg-blush/90 md:bg-transparent">
+    <div className="min-h-screen pt-3 md:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto bg-blush/90 md:bg-transparent">
       <button
         onClick={() => navigate('/')}
         className="flex items-center gap-2 text-sm text-charcoal/50 hover:text-rosegold transition-colors duration-300 mb-6"
