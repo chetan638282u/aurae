@@ -2,14 +2,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import RoutineBuilder from './RoutineBuilder'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function CartDrawer() {
   const { isOpen, setIsOpen, items, totalItems, totalPrice, updateQuantity, removeItem } = useCart()
   const isMobile = useIsMobile()
-  const [initialHash, setInitialHash] = useState(() => window.location.hash)
+  const initialHashRef = useRef(window.location.hash)
 
   useEffect(() => {
     if (window.location.hash === '#cart' && !isOpen) {
@@ -31,9 +31,9 @@ export default function CartDrawer() {
 
     const handleHashChange = () => {
       if (window.location.hash === '#cart') {
-        if (initialHash.startsWith('#checkout') && !isOpen) {
+        if (initialHashRef.current.startsWith('#checkout') && !isOpen) {
           window.location.hash = ''
-          setInitialHash('')
+          initialHashRef.current = ''
         } else if (!isOpen) {
           setIsOpen(true)
         }
