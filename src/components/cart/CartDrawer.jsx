@@ -40,11 +40,8 @@ export default function CartDrawer() {
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
-  return (
+  const content = isOpen && (
     <>
-      <AnimatePresence>
-        {isOpen && (
-          <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -176,11 +173,13 @@ export default function CartDrawer() {
                     Checkout
                   </motion.button>
                 </div>
-              )}
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+    </>
+  )
+
+  return (
+    <>
+      {isMobile ? content : <AnimatePresence>{content}</AnimatePresence>}
 
       <CheckoutModal
         isOpen={showCheckout}

@@ -45,10 +45,8 @@ export default function WishlistDrawer() {
     removeFromWishlist(product.id)
   }
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
+  const content = isOpen && (
+    <>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -150,8 +148,8 @@ export default function WishlistDrawer() {
               )}
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+    </>
   )
+
+  return isMobile ? content : <AnimatePresence>{content}</AnimatePresence>
 }
