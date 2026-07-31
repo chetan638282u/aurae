@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Star, Minus, Plus, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -6,6 +6,7 @@ import { useRouter } from '../../context/Router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import ingredientData from '../../data/ingredients'
 import IngredientAccordion from './IngredientAccordion'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const avatarGradients = [
   'linear-gradient(135deg, #B76E79, #D4A0A7)',
@@ -57,7 +58,13 @@ export default function ProductModal({ product, onClose }) {
   useEffect(() => {
     if (product) {
       document.body.style.overflow = 'hidden'
-      return () => { document.body.style.overflow = '' }
+    } else {
+      document.body.style.overflow = ''
+      ScrollTrigger.refresh()
+    }
+    return () => {
+      document.body.style.overflow = ''
+      ScrollTrigger.refresh()
     }
   }, [product])
 

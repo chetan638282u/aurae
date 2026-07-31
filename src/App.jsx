@@ -57,9 +57,9 @@ function PageRouter() {
     <>
       <MeshBackground active={showMesh} />
       {path === '/cart' ? <CartPage /> :
-       path === '/wishlist' ? <WishlistPage /> :
-       path === '/checkout' ? <CheckoutPage /> :
-       <HomePage />}
+        path === '/wishlist' ? <WishlistPage /> :
+          path === '/checkout' ? <CheckoutPage /> :
+            <HomePage />}
     </>
   )
 }
@@ -69,13 +69,13 @@ export default function App() {
     <RouterProvider>
       <CartProvider>
         <WishlistProvider>
-        <NavigationProvider>
-        <LenisProvider>
-          <div className="relative">
-            <PageRouter />
-          </div>
-        </LenisProvider>
-        </NavigationProvider>
+          <NavigationProvider>
+            <LenisProvider>
+              <div className="relative">
+                <PageRouter />
+              </div>
+            </LenisProvider>
+          </NavigationProvider>
         </WishlistProvider>
       </CartProvider>
     </RouterProvider>

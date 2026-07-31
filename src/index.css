@@ -7,9 +7,17 @@
     scroll-behavior: auto;
   }
 
+  html, body {
+    height: auto !important; /* Never use height: 100% to avoid mobile GPU purging */
+  }
+
   body {
     @apply bg-blush font-sans text-charcoal antialiased;
     overflow-x: hidden;
+  }
+
+  #root {
+    min-height: 100vh;
   }
 
   html.lenis {
