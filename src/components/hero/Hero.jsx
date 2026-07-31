@@ -228,7 +228,17 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => { if (lenis) lenis.scrollTo('#products', { offset: -80, duration: 1.2 }) }}
+              onClick={() => {
+                if (lenis) {
+                  lenis.scrollTo('#products', { offset: -80, duration: 1.2 })
+                } else {
+                  const el = document.querySelector('#products')
+                  if (el) {
+                    const y = el.getBoundingClientRect().top + window.scrollY - 80
+                    window.scrollTo({ top: y, behavior: 'smooth' })
+                  }
+                }
+              }}
               className="btn-primary w-48 text-center whitespace-nowrap"
             >
               Explore Products

@@ -17,6 +17,7 @@ import Footer from './components/layout/Footer'
 import ChatWidget from './components/chat/ChatWidget'
 import CartDrawer from './components/cart/CartDrawer'
 import WishlistDrawer from './components/wishlist/WishlistDrawer'
+import CheckoutPage from './components/checkout/CheckoutPage'
 import PurchaseNotification from './components/reviews/PurchaseNotification'
 import ScrollOnLoad from './components/ScrollOnLoad'
 
@@ -49,6 +50,7 @@ export default function App() {
           </div>
           <CartDrawer />
           <WishlistDrawer />
+          <CheckoutPage />
           <PurchaseNotification />
         </div>
       </LenisProvider>
