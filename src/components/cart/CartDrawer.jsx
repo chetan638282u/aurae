@@ -9,7 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 export default function CartDrawer() {
   const { isOpen, setIsOpen, items, totalItems, totalPrice, updateQuantity, removeItem } = useCart()
   const isMobile = useIsMobile()
-  const [initialHash] = useState(() => window.location.hash)
+  const [initialHash, setInitialHash] = useState(() => window.location.hash)
 
   useEffect(() => {
     if (window.location.hash === '#cart' && !isOpen) {
@@ -33,6 +33,7 @@ export default function CartDrawer() {
       if (window.location.hash === '#cart') {
         if (initialHash.startsWith('#checkout') && !isOpen) {
           window.location.hash = ''
+          setInitialHash('')
         } else if (!isOpen) {
           setIsOpen(true)
         }
