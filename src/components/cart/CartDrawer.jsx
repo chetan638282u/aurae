@@ -11,9 +11,15 @@ export default function CartDrawer() {
   const isMobile = useIsMobile()
 
   useEffect(() => {
+    if (window.location.hash === '#cart' && !isOpen) {
+      setIsOpen(true)
+    }
+
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      window.location.hash = '#cart'
+      if (window.location.hash !== '#cart') {
+        window.location.hash = '#cart'
+      }
     } else {
       document.body.style.overflow = ''
       ScrollTrigger.refresh()
@@ -23,7 +29,9 @@ export default function CartDrawer() {
     }
 
     const handleHashChange = () => {
-      if (window.location.hash !== '#cart' && isOpen) {
+      if (window.location.hash === '#cart') {
+        if (!isOpen) setIsOpen(true)
+      } else if (isOpen) {
         setIsOpen(false)
       }
     }

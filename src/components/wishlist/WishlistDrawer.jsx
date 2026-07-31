@@ -13,9 +13,15 @@ export default function WishlistDrawer() {
   const isMobile = useIsMobile()
 
   useEffect(() => {
+    if (window.location.hash === '#wishlist' && !isOpen) {
+      setIsOpen(true)
+    }
+
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      window.location.hash = '#wishlist'
+      if (window.location.hash !== '#wishlist') {
+        window.location.hash = '#wishlist'
+      }
     } else {
       document.body.style.overflow = ''
       ScrollTrigger.refresh()
@@ -25,7 +31,9 @@ export default function WishlistDrawer() {
     }
 
     const handleHashChange = () => {
-      if (window.location.hash !== '#wishlist' && isOpen) {
+      if (window.location.hash === '#wishlist') {
+        if (!isOpen) setIsOpen(true)
+      } else if (isOpen) {
         setIsOpen(false)
       }
     }
