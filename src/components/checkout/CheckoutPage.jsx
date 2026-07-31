@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, CreditCard, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -31,13 +31,9 @@ export default function CheckoutPage() {
     scrollPositions.current[step] = e.currentTarget.scrollTop
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (containerRef.current) {
-      requestAnimationFrame(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTop = scrollPositions.current[step] || 0
-        }
-      })
+      containerRef.current.scrollTop = scrollPositions.current[step] || 0
     }
   }, [step])
 
