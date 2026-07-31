@@ -73,7 +73,7 @@ export default function CartDrawer() {
               initial={skipAnimationRef.current ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: isMobile ? 0 : 0.3 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setIsOpen(false)}
               className="fixed inset-0 z-[70] bg-[rgba(45,42,38,0.3)]"
             />
@@ -83,7 +83,7 @@ export default function CartDrawer() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed top-0 right-0 z-[80] h-full w-full max-w-md bg-blush/90 glass-strong flex flex-col shadow-[-8px_0_32px_rgba(0,0,0,0.1)]"
+              className={`fixed top-0 right-0 z-[80] h-full w-full max-w-md flex flex-col shadow-[-8px_0_32px_rgba(0,0,0,0.1)] will-change-transform ${isMobile ? 'bg-blush' : 'bg-blush/90 glass-strong'}`}
             >
               {isMobile && (
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10">
@@ -104,7 +104,11 @@ export default function CartDrawer() {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
+              <div 
+                className="flex-1 overflow-y-auto overscroll-y-contain px-4 sm:px-6 py-6"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+                data-lenis-prevent="true"
+              >
                 {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <ShoppingBag size={48} className="text-charcoal/20 mb-4" />
