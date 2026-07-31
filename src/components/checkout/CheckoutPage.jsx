@@ -25,7 +25,15 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      setIsOpen(window.location.hash === '#checkout')
+      const hash = window.location.hash
+      if (hash.startsWith('#checkout')) {
+        setIsOpen(true)
+        if (hash === '#checkout-payment') setStep(2)
+        else if (hash === '#checkout-review') setStep(3)
+        else setStep(1)
+      } else {
+        setIsOpen(false)
+      }
     }
     handleHashChange() // Initial check
     window.addEventListener('hashchange', handleHashChange)
@@ -207,7 +215,7 @@ export default function CheckoutPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => { if (validateShipping()) setStep(2) }}
+                    onClick={() => { if (validateShipping()) window.location.hash = '#checkout-payment' }}
                     className="btn-primary w-full mt-2 flex items-center justify-center gap-2"
                   >
                     Continue to Payment
@@ -243,7 +251,7 @@ export default function CheckoutPage() {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => setStep(1)}
+                      onClick={() => { window.location.hash = '#checkout' }}
                       className="flex-1 glass rounded-full py-3 text-sm font-medium text-charcoal/60 hover:text-charcoal transition-colors duration-300"
                     >
                       Back
@@ -251,7 +259,7 @@ export default function CheckoutPage() {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => setStep(3)}
+                      onClick={() => { window.location.hash = '#checkout-review' }}
                       className="flex-1 btn-primary flex items-center justify-center gap-2"
                     >
                       Review Order
@@ -361,8 +369,8 @@ export default function CheckoutPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    if (step === 1 && validateShipping()) setStep(2)
-                    else if (step === 2) setStep(3)
+                    if (step === 1 && validateShipping()) window.location.hash = '#checkout-payment'
+                    else if (step === 2) window.location.hash = '#checkout-review'
                   }}
                   className="btn-primary w-full flex items-center justify-center gap-2"
                 >

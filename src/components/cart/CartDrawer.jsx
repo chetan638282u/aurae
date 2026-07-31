@@ -31,7 +31,7 @@ export default function CartDrawer() {
     const handleHashChange = () => {
       if (window.location.hash === '#cart') {
         if (!isOpen) setIsOpen(true)
-      } else if (isOpen && window.location.hash !== '#checkout') {
+      } else if (isOpen && !window.location.hash.startsWith('#checkout')) {
         setIsOpen(false)
       }
     }
