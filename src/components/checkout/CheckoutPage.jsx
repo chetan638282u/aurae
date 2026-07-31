@@ -209,7 +209,7 @@ export default function CheckoutPage() {
               const step1 = step === 1 && (
                 <motion.div
                   key="shipping"
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={isMobile ? false : { opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
@@ -245,7 +245,7 @@ export default function CheckoutPage() {
               const step2 = step === 2 && (
                 <motion.div
                   key="payment"
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={isMobile ? false : { opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
               const step3 = step === 3 && (
                 <motion.div
                   key="review"
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={isMobile ? false : { opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
