@@ -11,7 +11,7 @@ export default function CartIcon() {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setIsOpen(true)}
+      onClick={() => { window.location.hash = '#cart' }}
       className="relative p-1 flex items-center justify-center text-charcoal/70 hover:text-rosegold transition-colors duration-300"
       aria-label="Open cart"
     >

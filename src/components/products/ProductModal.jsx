@@ -152,7 +152,7 @@ export default function ProductModal({ product, onClose }) {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
                       addItem(product, qty)
-                      setIsOpen(true)
+                      window.location.hash = '#cart'
                     }}
                     className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2"
                   >

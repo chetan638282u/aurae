@@ -8,7 +8,7 @@ export default function WishlistIcon() {
 
   return (
     <button
-      onClick={() => setIsOpen(true)}
+      onClick={() => { window.location.hash = '#wishlist' }}
       className="relative p-2 text-charcoal/70 hover:text-rosegold transition-colors duration-300"
       aria-label="Open wishlist"
     >
