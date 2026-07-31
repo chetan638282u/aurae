@@ -9,6 +9,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 export default function CartDrawer() {
   const { isOpen, setIsOpen, items, totalItems, totalPrice, updateQuantity, removeItem } = useCart()
   const isMobile = useIsMobile()
+  const initialHashRef = useRef(window.location.hash)
+  const skipAnimationRef = useRef(false)
 
   // 1. Handle Initial Mount Hash
   useEffect(() => {
@@ -45,7 +47,15 @@ export default function CartDrawer() {
   useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#cart') {
-        if (!isOpen) setIsOpen(true)
+        if (!isOpen) {
+          if (initialHashRef.current.startsWith('#checkout')) {
+            skipAnimationRef.current = true
+            initialHashRef.current = ''
+          } else {
+            skipAnimationRef.current = false
+          }
+          setIsOpen(true)
+        }
       } else if (isOpen && !window.location.hash.startsWith('#checkout')) {
         setIsOpen(false)
       }
@@ -60,7 +70,7 @@ export default function CartDrawer() {
   const content = isOpen && (
     <>
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={skipAnimationRef.current ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: isMobile ? 0 : 0.3 }}
@@ -69,7 +79,7 @@ export default function CartDrawer() {
             />
 
             <motion.div
-              initial={{ opacity: 0, x: '100%' }}
+              initial={skipAnimationRef.current ? false : { opacity: 0, x: '100%' }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
