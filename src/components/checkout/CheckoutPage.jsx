@@ -225,9 +225,8 @@ export default function CheckoutPage() {
                     <ChevronRight size={16} />
                   </motion.button>
                 </motion.div>
-              )}
-
-              {step === 2 && (
+              )},
+              step === 2 && (
                 <motion.div
                   key="payment"
                   initial={{ opacity: 0, x: 20 }}
@@ -270,9 +269,8 @@ export default function CheckoutPage() {
                     </motion.button>
                   </div>
                 </motion.div>
-              )}
-
-              {step === 3 && (
+              )},
+              step === 3 && (
                 <motion.div
                   key="review"
                   initial={{ opacity: 0, x: -20 }}
