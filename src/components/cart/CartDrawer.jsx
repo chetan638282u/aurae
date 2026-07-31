@@ -31,7 +31,7 @@ export default function CartDrawer() {
     const handleHashChange = () => {
       if (window.location.hash === '#cart') {
         if (!isOpen) setIsOpen(true)
-      } else if (isOpen) {
+      } else if (isOpen && window.location.hash !== '#checkout') {
         setIsOpen(false)
       }
     }
@@ -174,7 +174,6 @@ export default function CartDrawer() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
-                      setIsOpen(false)
                       window.location.hash = '#checkout'
                     }}
                     className="btn-primary w-full"

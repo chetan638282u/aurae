@@ -37,7 +37,9 @@ export default function CheckoutPage() {
       document.body.style.overflow = 'hidden'
       window.scrollTo(0, 0)
     } else {
-      document.body.style.overflow = ''
+      if (window.location.hash !== '#cart' && window.location.hash !== '#wishlist') {
+        document.body.style.overflow = ''
+      }
     }
   }, [isOpen])
 
