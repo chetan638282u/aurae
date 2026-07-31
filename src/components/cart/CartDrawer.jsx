@@ -11,11 +11,16 @@ export default function CartDrawer() {
   const isMobile = useIsMobile()
   const initialHashRef = useRef(window.location.hash)
 
+  // 1. Handle Initial Mount Hash
   useEffect(() => {
-    if (window.location.hash === '#cart' && !isOpen) {
+    if (window.location.hash === '#cart') {
       setIsOpen(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  // 2. Handle State <-> DOM Sync
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
       if (window.location.hash !== '#cart') {
@@ -29,6 +34,16 @@ export default function CartDrawer() {
       }
     }
 
+    return () => {
+      if (isOpen) {
+        document.body.style.overflow = ''
+        ScrollTrigger.refresh()
+      }
+    }
+  }, [isOpen])
+
+  // 3. Handle External Hash Changes
+  useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#cart') {
         if (initialHashRef.current.startsWith('#checkout') && !isOpen) {
@@ -43,11 +58,7 @@ export default function CartDrawer() {
     }
 
     window.addEventListener('hashchange', handleHashChange)
-    return () => {
-      document.body.style.overflow = ''
-      ScrollTrigger.refresh()
-      window.removeEventListener('hashchange', handleHashChange)
-    }
+    return () => window.removeEventListener('hashchange', handleHashChange)
   }, [isOpen, setIsOpen])
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)

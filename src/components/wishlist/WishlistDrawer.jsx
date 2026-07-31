@@ -12,11 +12,16 @@ export default function WishlistDrawer() {
   const { addItem } = useCart()
   const isMobile = useIsMobile()
 
+  // 1. Handle Initial Mount Hash
   useEffect(() => {
-    if (window.location.hash === '#wishlist' && !isOpen) {
+    if (window.location.hash === '#wishlist') {
       setIsOpen(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  // 2. Handle State <-> DOM Sync
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
       if (window.location.hash !== '#wishlist') {
@@ -30,6 +35,16 @@ export default function WishlistDrawer() {
       }
     }
 
+    return () => {
+      if (isOpen) {
+        document.body.style.overflow = ''
+        ScrollTrigger.refresh()
+      }
+    }
+  }, [isOpen])
+
+  // 3. Handle External Hash Changes
+  useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#wishlist') {
         if (!isOpen) setIsOpen(true)
@@ -39,11 +54,7 @@ export default function WishlistDrawer() {
     }
 
     window.addEventListener('hashchange', handleHashChange)
-    return () => {
-      document.body.style.overflow = ''
-      ScrollTrigger.refresh()
-      window.removeEventListener('hashchange', handleHashChange)
-    }
+    return () => window.removeEventListener('hashchange', handleHashChange)
   }, [isOpen, setIsOpen])
 
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id))
