@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import RoutineBuilder from './RoutineBuilder'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
