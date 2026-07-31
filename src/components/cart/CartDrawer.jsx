@@ -173,6 +173,7 @@ export default function CartDrawer() {
                     Checkout
                   </motion.button>
                 </div>
+              )}
             </motion.div>
     </>
   )
