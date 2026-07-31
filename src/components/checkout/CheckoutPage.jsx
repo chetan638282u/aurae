@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, CreditCard, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -24,6 +24,22 @@ export default function CheckoutPage() {
   const [toast, setToast] = useState({ visible: false, message: '', type: 'success' })
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useIsMobile()
+  const scrollPositions = useRef({ 1: 0, 2: 0, 3: 0 })
+  const containerRef = useRef(null)
+
+  const handleScroll = (e) => {
+    scrollPositions.current[step] = e.currentTarget.scrollTop
+  }
+
+  useEffect(() => {
+    if (containerRef.current) {
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = scrollPositions.current[step] || 0
+        }
+      })
+    }
+  }, [step])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -66,6 +82,7 @@ export default function CheckoutPage() {
         setDone(false)
         setSubmitting(false)
         setToast({ visible: false, message: '', type: 'success' })
+        scrollPositions.current = { 1: 0, 2: 0, 3: 0 }
       }, 300)
     }
   }, [isOpen])
@@ -146,7 +163,11 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-blush pt-16 pb-16 overflow-y-auto">
+    <div 
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="fixed inset-0 z-[100] bg-blush pt-16 pb-16 overflow-y-auto"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <button
           onClick={() => { window.location.hash = '#cart' }}
