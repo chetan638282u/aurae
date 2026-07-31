@@ -120,6 +120,7 @@ export default function CartDrawer() {
                     {items.map((item) => (
                       <motion.div
                         key={item.product.id}
+                        layout
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: 40 }}
@@ -210,5 +211,5 @@ export default function CartDrawer() {
     </>
   )
 
-  return <AnimatePresence>{content}</AnimatePresence>
+  return isMobile ? content : <AnimatePresence>{content}</AnimatePresence>
 }
