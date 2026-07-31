@@ -1,6 +1,7 @@
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { NavigationProvider } from './context/NavigationContext'
+import { RouterProvider } from './context/Router'
 import { LenisProvider } from './context/LenisContext'
 import MeshBackground from './components/MeshBackground'
 import SectionDivider from './components/SectionDivider'
@@ -21,8 +22,9 @@ import ScrollOnLoad from './components/ScrollOnLoad'
 
 export default function App() {
   return (
-    <CartProvider>
-      <WishlistProvider>
+    <RouterProvider>
+      <CartProvider>
+        <WishlistProvider>
       <NavigationProvider>
       <LenisProvider>
         <div className="relative min-h-[100vh]">
@@ -51,7 +53,8 @@ export default function App() {
         </div>
       </LenisProvider>
       </NavigationProvider>
-      </WishlistProvider>
-    </CartProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </RouterProvider>
   )
 }
