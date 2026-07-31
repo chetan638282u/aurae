@@ -23,7 +23,7 @@ export default function WishlistDrawer() {
   // 2. Handle State <-> DOM Sync
   useEffect(() => {
     if (isOpen) {
-      if (!isMobile) document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden'
       if (window.location.hash !== '#wishlist') {
         window.location.hash = '#wishlist'
       }
