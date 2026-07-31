@@ -23,7 +23,7 @@ export default function CartDrawer() {
   // 2. Handle State <-> DOM Sync
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
+      if (!isMobile) document.body.style.overflow = 'hidden'
       if (window.location.hash !== '#cart') {
         window.location.hash = '#cart'
       }
