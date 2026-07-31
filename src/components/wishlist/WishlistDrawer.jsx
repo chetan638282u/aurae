@@ -26,7 +26,7 @@ export default function WishlistDrawer() {
       document.body.style.overflow = ''
       ScrollTrigger.refresh()
       if (window.location.hash === '#wishlist') {
-        window.history.back()
+        window.history.replaceState(null, '', window.location.pathname + window.location.search)
       }
     }
 
