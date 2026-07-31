@@ -189,8 +189,7 @@ export default function CheckoutPage() {
             </div>
 
             {(() => {
-              const stepsContent = [
-              step === 1 && (
+              const step1 = step === 1 && (
                 <motion.div
                   key="shipping"
                   initial={{ opacity: 0, x: -20 }}
@@ -225,8 +224,8 @@ export default function CheckoutPage() {
                     <ChevronRight size={16} />
                   </motion.button>
                 </motion.div>
-              )},
-              step === 2 && (
+              )
+              const step2 = step === 2 && (
                 <motion.div
                   key="payment"
                   initial={{ opacity: 0, x: 20 }}
@@ -269,8 +268,8 @@ export default function CheckoutPage() {
                     </motion.button>
                   </div>
                 </motion.div>
-              )},
-              step === 3 && (
+              )
+              const step3 = step === 3 && (
                 <motion.div
                   key="review"
                   initial={{ opacity: 0, x: -20 }}
@@ -322,9 +321,21 @@ export default function CheckoutPage() {
                     )}
                   </motion.button>
                 </motion.div>
-              )}
-              ]
-              return isMobile ? <>{stepsContent}</> : <AnimatePresence mode="wait">{stepsContent}</AnimatePresence>
+              )
+
+              return isMobile ? (
+                <>
+                  {step1}
+                  {step2}
+                  {step3}
+                </>
+              ) : (
+                <AnimatePresence mode="wait">
+                  {step1}
+                  {step2}
+                  {step3}
+                </AnimatePresence>
+              )
             })()}
           </div>
 
