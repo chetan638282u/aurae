@@ -4,14 +4,14 @@ import { useCart } from '../../context/CartContext'
 import { useRouter } from '../../context/Router'
 
 export default function CartIcon() {
-  const { totalItems } = useCart()
+  const { totalItems, setIsOpen } = useCart()
   const { navigate } = useRouter()
 
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => navigate('/cart')}
+      onClick={() => setIsOpen(true)}
       className="relative p-1 flex items-center justify-center text-charcoal/70 hover:text-rosegold transition-colors duration-300"
       aria-label="Open cart"
     >

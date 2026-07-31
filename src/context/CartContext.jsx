@@ -14,6 +14,7 @@ function loadCart() {
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(loadCart)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
@@ -66,6 +67,8 @@ export function CartProvider({ children }) {
         clearCart,
         totalItems,
         subtotal,
+        isOpen,
+        setIsOpen,
       }}
     >
       {children}

@@ -22,7 +22,7 @@ export default function ProductModal({ product, onClose }) {
   const [rotateX, setRotateX] = useState(0)
   const [rotateY, setRotateY] = useState(0)
   const [galleryIndex, setGalleryIndex] = useState(0)
-  const { addItem } = useCart()
+  const { addItem, setIsOpen } = useCart()
   const { navigate } = useRouter()
   const isMobile = useIsMobile()
 
@@ -152,7 +152,7 @@ export default function ProductModal({ product, onClose }) {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
                       addItem(product, qty)
-                      navigate('/cart')
+                      setIsOpen(true)
                     }}
                     className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-2"
                   >
