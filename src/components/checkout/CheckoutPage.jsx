@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, CreditCard, Check, ChevronRight, MapPin, ShoppingBag, ShieldCheck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import PaymentForm from './PaymentForm'
 import Toast from '../contact/Toast'
 
@@ -22,6 +23,7 @@ export default function CheckoutPage() {
   const [done, setDone] = useState(false)
   const [toast, setToast] = useState({ visible: false, message: '', type: 'success' })
   const [isOpen, setIsOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -186,8 +188,9 @@ export default function CheckoutPage() {
               })}
             </div>
 
-            <AnimatePresence mode="wait">
-              {step === 1 && (
+            {(() => {
+              const stepsContent = [
+              step === 1 && (
                 <motion.div
                   key="shipping"
                   initial={{ opacity: 0, x: -20 }}
@@ -322,7 +325,9 @@ export default function CheckoutPage() {
                   </motion.button>
                 </motion.div>
               )}
-            </AnimatePresence>
+              ]
+              return isMobile ? <>{stepsContent}</> : <AnimatePresence mode="wait">{stepsContent}</AnimatePresence>
+            })()}
           </div>
 
           <div className="lg:w-80 shrink-0">
