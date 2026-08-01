@@ -79,8 +79,8 @@ export default function ChatWidget() {
       setShowPulse(false)
       const timer = setTimeout(() => {
         setMessages([
-          { role: 'bot', content: 'Hi! Welcome to AURAE. I am your AI assistant, here to help you with our collection, answer questions, and assist with your shopping experience.', time: new Date() },
-          { role: 'bot', content: 'Please note that by using our services, you agree to our Terms & Conditions, Return Policy, and Privacy Policy. How can I help you today?', time: new Date() }
+          { role: 'bot', content: "Hi, I am Auraea! I'm here to help you with the website, answer questions about any product, find products for your skin type, and more.", time: new Date() },
+          { role: 'bot', content: "Please note that by using our services, you agree to our Terms & Conditions and Refund Policy. How can I help you today?", time: new Date() }
         ])
       }, 400)
       return () => clearTimeout(timer)
@@ -124,8 +124,8 @@ export default function ChatWidget() {
     setIsTyping(false)
   }, [messages])
 
-  const handleSend = useCallback(() => {
-    const text = inputValue.trim()
+  const handleSend = useCallback((overrideText) => {
+    const text = (typeof overrideText === 'string' ? overrideText : inputValue).trim()
     if (!text || isTyping) return
 
     setMessages((prev) => [...prev, { role: 'user', content: text, time: new Date() }])
@@ -181,6 +181,25 @@ export default function ChatWidget() {
                 {messages.map((msg, i) => (
                   <ChatMessage key={i} message={msg} />
                 ))}
+                
+                {messages.length === 2 && !isTyping && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-wrap gap-2 mt-4 mb-2"
+                  >
+                    {['Oily skin type', 'Dry skin type', 'All skin types', 'Refund Policy'].map((reply, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSend(reply)}
+                        className="px-3 py-1.5 text-[11px] font-medium border border-charcoal/20 rounded-full text-charcoal/70 hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-colors"
+                      >
+                        {reply}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+
                 <AnimatePresence>
                   {isTyping && <TypingIndicator />}
                 </AnimatePresence>
