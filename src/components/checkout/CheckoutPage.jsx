@@ -57,7 +57,6 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      window.scrollTo(0, 0)
     } else {
       if (window.location.hash !== '#cart' && window.location.hash !== '#wishlist') {
         document.body.style.overflow = ''
