@@ -78,7 +78,10 @@ export default function ChatWidget() {
       setHasOpened(true)
       setShowPulse(false)
       const timer = setTimeout(() => {
-        setMessages([{ role: 'bot', content: 'Hi! Welcome to AURAE. How can I help you today?', time: new Date() }])
+        setMessages([
+          { role: 'bot', content: 'Hi! Welcome to AURAE. I am your AI assistant, here to help you with our collection, answer questions, and assist with your shopping experience.', time: new Date() },
+          { role: 'bot', content: 'Please note that by using our services, you agree to our Terms & Conditions, Return Policy, and Privacy Policy. How can I help you today?', time: new Date() }
+        ])
       }, 400)
       return () => clearTimeout(timer)
     }
