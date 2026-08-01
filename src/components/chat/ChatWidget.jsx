@@ -77,13 +77,6 @@ export default function ChatWidget() {
     if (isOpen && !hasOpened) {
       setHasOpened(true)
       setShowPulse(false)
-      const timer = setTimeout(() => {
-        setMessages([
-          { role: 'bot', content: "Hi, I am Auraea! I'm here to help you with the website, answer questions about any product, find products for your skin type, and more.", time: new Date() },
-          { role: 'bot', content: "Please note that by using our services, you agree to our Terms & Conditions and Refund Policy. How can I help you today?", time: new Date() }
-        ])
-      }, 400)
-      return () => clearTimeout(timer)
     }
   }, [isOpen, hasOpened])
 
@@ -178,27 +171,33 @@ export default function ChatWidget() {
               </div>
 
               <div className="flex-1 overflow-y-auto px-5 py-4 scroll-smooth">
+                {messages.length === 0 && (
+                  <div className="mb-6 flex flex-col items-start mt-2">
+                    <div className="w-10 h-10 rounded-full glass flex items-center justify-center mb-3" style={{ color: '#B76E79' }}>
+                      <Bot size={20} />
+                    </div>
+                    <h3 className="font-serif text-lg font-bold text-charcoal mb-2">Hi, I am Auraea!</h3>
+                    <p className="text-sm text-charcoal/70 leading-relaxed mb-5">
+                      I'm here to help you with the website, answer questions about any product, find products for your skin type, and provide details about our Refund Policy. How can I help you today?
+                    </p>
+                    
+                    <div className="flex flex-col gap-2 w-full">
+                      {['Oily skin type', 'Dry skin type', 'All skin types', 'Refund Policy'].map((reply, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSend(reply)}
+                          className="px-4 py-2.5 text-[11px] font-medium text-left glass border border-charcoal/10 rounded-xl text-charcoal/80 hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-all duration-300 shadow-sm"
+                        >
+                          {reply}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {messages.map((msg, i) => (
                   <ChatMessage key={i} message={msg} />
                 ))}
-                
-                {messages.length === 2 && !isTyping && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-wrap gap-2 mt-4 mb-2"
-                  >
-                    {['Oily skin type', 'Dry skin type', 'All skin types', 'Refund Policy'].map((reply, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleSend(reply)}
-                        className="px-3 py-1.5 text-[11px] font-medium border border-charcoal/20 rounded-full text-charcoal/70 hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-colors"
-                      >
-                        {reply}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
 
                 <AnimatePresence>
                   {isTyping && <TypingIndicator />}
