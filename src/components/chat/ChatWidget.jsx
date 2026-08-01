@@ -172,13 +172,13 @@ export default function ChatWidget() {
 
               <div className="flex-1 overflow-y-auto px-5 py-4 scroll-smooth">
                 {messages.length === 0 && (
-                  <div className="mb-8 flex flex-col items-start mt-4">
-                    <h3 className="font-serif text-2xl font-bold text-charcoal mb-3">Hi, I am Auraea.</h3>
-                    <p className="text-sm text-charcoal/70 leading-relaxed mb-6">
+                  <div className="mb-4 flex flex-col items-start mt-2">
+                    <h3 className="font-serif text-xl font-bold text-charcoal mb-1.5">Hi, I am Auraea.</h3>
+                    <p className="text-xs text-charcoal/70 leading-relaxed mb-4">
                       I'm your personal assistant, here to help you navigate our collection, recommend products perfectly suited for your skin type, and assist with any details like our Refund Policy. How can I guide you today?
                     </p>
                     
-                    <div className="flex flex-wrap gap-2.5 w-full">
+                    <div className="flex flex-wrap gap-1.5 w-full">
                       {[
                         'I have oily skin, what do you recommend?', 
                         'Could you suggest products for dry skin?', 
@@ -188,7 +188,7 @@ export default function ChatWidget() {
                         <button
                           key={idx}
                           onClick={() => handleSend(reply)}
-                          className="px-4 py-2.5 text-xs font-medium text-left bg-white/60 border border-white/40 rounded-full text-charcoal hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-all duration-300 shadow-sm shadow-black/5"
+                          className="px-3 py-1.5 text-[10px] font-medium text-left bg-white/60 border border-white/40 rounded-full text-charcoal hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-all duration-300 shadow-sm shadow-black/5"
                         >
                           {reply}
                         </button>
