@@ -172,21 +172,23 @@ export default function ChatWidget() {
 
               <div className="flex-1 overflow-y-auto px-5 py-4 scroll-smooth">
                 {messages.length === 0 && (
-                  <div className="mb-6 flex flex-col items-start mt-2">
-                    <div className="w-10 h-10 rounded-full glass flex items-center justify-center mb-3" style={{ color: '#B76E79' }}>
-                      <Bot size={20} />
-                    </div>
-                    <h3 className="font-serif text-lg font-bold text-charcoal mb-2">Hi, I am Auraea!</h3>
-                    <p className="text-sm text-charcoal/70 leading-relaxed mb-5">
-                      I'm here to help you with the website, answer questions about any product, find products for your skin type, and provide details about our Refund Policy. How can I help you today?
+                  <div className="mb-8 flex flex-col items-start mt-4">
+                    <h3 className="font-serif text-2xl font-bold text-charcoal mb-3">Hi, I am Auraea.</h3>
+                    <p className="text-sm text-charcoal/70 leading-relaxed mb-6">
+                      I'm your personal assistant, here to help you navigate our collection, recommend products perfectly suited for your skin type, and assist with any details like our Refund Policy. How can I guide you today?
                     </p>
                     
-                    <div className="flex flex-col gap-2 w-full">
-                      {['Oily skin type', 'Dry skin type', 'All skin types', 'Refund Policy'].map((reply, idx) => (
+                    <div className="flex flex-wrap gap-2.5 w-full">
+                      {[
+                        'I have oily skin, what do you recommend?', 
+                        'Could you suggest products for dry skin?', 
+                        'What works best for all skin types?', 
+                        'Can you explain your refund policy?'
+                      ].map((reply, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSend(reply)}
-                          className="px-4 py-2.5 text-[11px] font-medium text-left glass border border-charcoal/10 rounded-xl text-charcoal/80 hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-all duration-300 shadow-sm"
+                          className="px-4 py-2.5 text-xs font-medium text-left bg-white/60 border border-white/40 rounded-full text-charcoal hover:bg-[#B76E79] hover:text-white hover:border-[#B76E79] transition-all duration-300 shadow-sm shadow-black/5"
                         >
                           {reply}
                         </button>
