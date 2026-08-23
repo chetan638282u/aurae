@@ -138,8 +138,8 @@ export default async function handler(req, res) {
         const modelsPage = await groq.models.list();
         const availableModels = modelsPage.data?.map(m => m.id) || [];
         
-        // Dynamically pick the first valid text model, excluding audio/vision/guard/TTS models
-        const fallbackModel = availableModels.find(m => m !== targetModel && !m.includes('whisper') && !m.includes('vision') && !m.includes('guard') && !m.includes('orpheus')) || availableModels[0];
+        // Dynamically pick the first valid text model, excluding audio/vision/guard/TTS/embedding models
+        const fallbackModel = availableModels.find(m => m !== targetModel && !m.includes('whisper') && !m.includes('vision') && !m.includes('guard') && !m.includes('orpheus') && !m.includes('embed')) || availableModels[0];
         
         if (fallbackModel && fallbackModel !== targetModel) {
           console.log(`Retrying with fallback model: ${fallbackModel}`);
@@ -162,6 +162,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply })
   } catch (error) {
     console.error('Chat function error:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: error.message || 'Internal server error' })
   }
 }

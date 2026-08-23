@@ -106,12 +106,15 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: text, history }),
       })
 
-      if (!res.ok) throw new Error('API error')
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `HTTP error ${res.status}`);
+      }
 
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'bot', content: data.reply, time: new Date() }])
-    } catch {
-      setMessages((prev) => [...prev, { role: 'bot', content: 'Sorry, I\'m having trouble connecting. Please try again in a moment.', time: new Date() }])
+    } catch (err) {
+      setMessages((prev) => [...prev, { role: 'bot', content: `Error: ${err.message}`, time: new Date() }])
     }
 
     setIsTyping(false)
