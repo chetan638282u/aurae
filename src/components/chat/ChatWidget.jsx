@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, MessageCircle, Bot } from 'lucide-react'
+import { X, Send, MessageCircle, Bot, Heart, ShoppingBag } from 'lucide-react'
+import products from '../../data/products'
+import { useCart } from '../../context/CartContext'
+import { useWishlist } from '../../context/WishlistContext'
 
 function formatTime(date) {
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
@@ -9,18 +12,41 @@ function formatTime(date) {
 function ChatMessage({ message }) {
   const isBot = message.role === 'bot'
   const time = message.time || new Date()
+
+  const { addItem, setIsOpen: setCartOpen } = useCart()
+  const { toggleWishlist, isWishlisted } = useWishlist()
+
+  let content = message.content
+  let embeddedProducts = []
+
+  if (isBot && content) {
+    // Extract ALL product IDs globally
+    const matches = [...content.matchAll(/\[PRODUCT_ID:(\d+)\]/gi)]
+    if (matches.length > 0) {
+      matches.forEach(match => {
+        const productId = parseInt(match[1], 10)
+        const p = products.find((prod) => prod.id === productId)
+        if (p && !embeddedProducts.find(existing => existing.id === p.id)) {
+          embeddedProducts.push(p)
+        }
+      })
+      // Strip all tags from the text
+      content = content.replace(/\[PRODUCT_ID:\d+\]/gi, '').trim()
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} mb-3`}
+      className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} mb-3 w-full`}
     >
       <span className={`text-[10px] font-medium tracking-wide mb-1 ${isBot ? 'text-charcoal/40 ml-1' : 'text-charcoal/40 mr-1'}`}>
         {isBot ? 'AURAE' : 'You'}
       </span>
       <div
-        className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
+        className={`max-w-[95%] px-4 py-3 text-sm leading-relaxed ${
           isBot
             ? 'bg-white/80 rounded-2xl rounded-bl-md text-charcoal'
             : 'rounded-2xl rounded-br-md text-white'
@@ -31,7 +57,47 @@ function ChatMessage({ message }) {
             : { background: '#B76E79' }
         }
       >
-        {message.content}
+        {content}
+
+        {embeddedProducts.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-charcoal/10 flex overflow-x-auto gap-3 pb-2 scrollbar-hide -mx-2 px-2">
+            {embeddedProducts.map(product => (
+              <div key={product.id} className="flex-none w-[180px] flex flex-col gap-3 bg-white/50 p-2.5 rounded-lg border border-white/40 shadow-sm">
+                <div className="flex gap-3 items-center">
+                  <div className="w-12 h-12 rounded overflow-hidden shrink-0">
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold font-serif text-charcoal line-clamp-2 leading-tight">{product.name}</p>
+                    <p className="text-[10px] text-charcoal/60 mt-0.5">${product.price}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-auto">
+                  <button
+                    onClick={() => {
+                      addItem(product)
+                      setCartOpen(true)
+                    }}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-charcoal text-white rounded text-[9px] font-medium tracking-wide hover:bg-rosegold transition-colors"
+                  >
+                    <ShoppingBag size={10} />
+                    ADD
+                  </button>
+                  <button
+                    onClick={() => toggleWishlist(product.id)}
+                    className={`w-7 h-7 flex items-center justify-center rounded border transition-colors shrink-0 ${
+                      isWishlisted(product.id)
+                        ? 'border-rosegold text-rosegold bg-rosegold/10'
+                        : 'border-charcoal/20 text-charcoal hover:border-rosegold hover:text-rosegold'
+                    }`}
+                  >
+                    <Heart size={10} className={isWishlisted(product.id) ? 'fill-rosegold' : ''} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <span className="text-[9px] text-charcoal/30 mt-0.5 px-1">{formatTime(time)}</span>
     </motion.div>
