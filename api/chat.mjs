@@ -157,7 +157,10 @@ export default async function handler(req, res) {
       }
     }
 
-    const reply = completion.choices[0]?.message?.content || 'Sorry, I couldn\'t process that. Please try again.'
+    let reply = completion.choices[0]?.message?.content || 'Sorry, I couldn\'t process that. Please try again.'
+    
+    // Strip out <think>...</think> blocks from deep reasoning models
+    reply = reply.replace(/<think>[\s\S]*?<\/think>\n*/g, '').trim();
 
     return res.status(200).json({ reply })
   } catch (error) {
