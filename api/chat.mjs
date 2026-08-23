@@ -186,6 +186,10 @@ export default async function handler(req, res) {
     // Strip out <think>...</think> blocks from deep reasoning models, even if they are unclosed or interrupted
     reply = reply.replace(/<think>[\s\S]*?(?:<\/think>|$)\n*/gi, '').trim();
 
+    if (!reply) {
+      return res.status(500).json({ error: "Debug Error: The AI generated an empty response. This usually means a deep reasoning model consumed all max_tokens inside a hidden <think> block without actually answering." });
+    }
+
     return res.status(200).json({ reply })
   } catch (error) {
     console.error('Chat function error:', error)
