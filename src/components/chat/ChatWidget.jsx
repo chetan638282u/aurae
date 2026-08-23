@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, MessageCircle, Bot, Heart, ShoppingBag } from 'lucide-react'
-import products from '../../data/products'
-import { useCart } from '../../context/CartContext'
-import { useWishlist } from '../../context/WishlistContext'
+import { X, Send, MessageCircle, Bot } from 'lucide-react'
 
 function formatTime(date) {
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
@@ -12,28 +9,12 @@ function formatTime(date) {
 function ChatMessage({ message }) {
   const isBot = message.role === 'bot'
   const time = message.time || new Date()
-
-  const { addItem, setIsOpen: setCartOpen } = useCart()
-  const { toggleWishlist, isWishlisted } = useWishlist()
-
-  let content = message.content
-  let product = null
-
-  if (isBot) {
-    const match = content.match(/\[PRODUCT_ID:(\d+)\]/i)
-    if (match) {
-      const productId = parseInt(match[1], 10)
-      product = products.find((p) => p.id === productId)
-      content = content.replace(/\[PRODUCT_ID:\d+\]/gi, '').trim()
-    }
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} mb-3 w-full`}
+      className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} mb-3`}
     >
       <span className={`text-[10px] font-medium tracking-wide mb-1 ${isBot ? 'text-charcoal/40 ml-1' : 'text-charcoal/40 mr-1'}`}>
         {isBot ? 'AURAE' : 'You'}
@@ -50,43 +31,7 @@ function ChatMessage({ message }) {
             : { background: '#B76E79' }
         }
       >
-        {content}
-
-        {product && (
-          <div className="mt-3 pt-3 border-t border-charcoal/10 flex flex-col gap-3">
-            <div className="flex gap-3 items-center">
-              <div className="w-12 h-12 rounded overflow-hidden shrink-0">
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-              </div>
-              <div>
-                <p className="text-xs font-bold font-serif text-charcoal line-clamp-2 leading-tight">{product.name}</p>
-                <p className="text-xs text-charcoal/60 mt-0.5">${product.price}</p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  addItem(product)
-                  setCartOpen(true)
-                }}
-                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-charcoal text-white rounded text-[10px] font-medium tracking-wide hover:bg-rosegold transition-colors"
-              >
-                <ShoppingBag size={12} />
-                ADD TO CART
-              </button>
-              <button
-                onClick={() => toggleWishlist(product.id)}
-                className={`w-8 h-8 flex items-center justify-center rounded border transition-colors ${
-                  isWishlisted(product.id)
-                    ? 'border-rosegold text-rosegold bg-rosegold/10'
-                    : 'border-charcoal/20 text-charcoal hover:border-rosegold hover:text-rosegold'
-                }`}
-              >
-                <Heart size={12} className={isWishlisted(product.id) ? 'fill-rosegold' : ''} />
-              </button>
-            </div>
-          </div>
-        )}
+        {message.content}
       </div>
       <span className="text-[9px] text-charcoal/30 mt-0.5 px-1">{formatTime(time)}</span>
     </motion.div>
