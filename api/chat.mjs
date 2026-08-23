@@ -64,7 +64,7 @@ Shipping: Free shipping on orders over $75. 30-day satisfaction guarantee.`
   }
 
   const productList = products.map((p) =>
-    `${p.name} — $${p.price} (${p.category})
+    `${p.name} (ID: ${p.id}) — $${p.price} (${p.category})
 ${p.description}`
   ).join('\n\n')
 
@@ -77,6 +77,7 @@ CRITICAL RULES:
 - When recommending, map products to skin types based on their descriptions.
 - Ask at most one follow-up question per reply.
 - Always use real product names and prices from the data below. Never invent products.
+- If you recommend a specific product to the user, you MUST append its ID at the very end of your entire message in this exact format: [PRODUCT_ID:X] (for example, [PRODUCT_ID:1]). Only include ONE product ID per message.
 
 === BRAND INFO ===
 Name: AURAE
