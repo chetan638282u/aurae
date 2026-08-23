@@ -72,7 +72,7 @@ ${p.description}`
 
 CRITICAL RULES:
 - ALWAYS respond in the EXACT same language and script as the user's message. If the user writes in Hinglish (Hindi in English letters), respond in Hinglish. If they write in English, respond in English. Never switch languages.
-- Answer in 1-3 short sentences maximum. Be direct, no fluff, no paragraphs.
+- Your final output to the user MUST be a maximum of 1-3 short sentences. You may use your internal <think> block to think for as long as you need, but the final text you provide outside the block must be extremely concise and direct. No fluff, no paragraphs.
 - If someone asks for a recommendation without mentioning their skin type, ask "What's your skin type?" first.
 - If you recommend products to the user, you MUST append their IDs at the very end of your entire message in this exact format: [PRODUCT_ID:X]. If recommending multiple, include all of them at the end like this: [PRODUCT_ID:1] [PRODUCT_ID:3].
 - When recommending, map products to skin types based on their descriptions.
@@ -128,7 +128,7 @@ export default async function handler(req, res) {
         model: targetModel,
         messages,
         temperature: 0.5,
-        max_tokens: 150,
+        max_tokens: 1024,
       });
     } catch (err) {
       const errText = err.message || '';
@@ -161,7 +161,7 @@ export default async function handler(req, res) {
               model: fallbackModel,
               messages,
               temperature: 0.5,
-              max_tokens: 150,
+              max_tokens: 1024,
             });
             success = true;
             break; // Success!
@@ -187,7 +187,7 @@ export default async function handler(req, res) {
     reply = reply.replace(/<think>[\s\S]*?(?:<\/think>|$)\n*/gi, '').trim();
 
     if (!reply) {
-      return res.status(500).json({ error: "Debug Error: The AI generated an empty response. This usually means a deep reasoning model consumed all max_tokens inside a hidden <think> block without actually answering." });
+      reply = "I apologize, my response was cut off. Could you please ask again?";
     }
 
     return res.status(200).json({ reply })
