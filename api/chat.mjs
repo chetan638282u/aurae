@@ -131,26 +131,49 @@ export default async function handler(req, res) {
       });
     } catch (err) {
       const errText = err.message || '';
-      const isModelError = errText.includes('model_not_found') || errText.includes('model_decommissioned') || errText.includes('does not exist') || errText.includes('decommissioned');
+      const isModelError = errText.includes('model_not_found') || errText.includes('model_decommissioned') || errText.includes('does not exist') || errText.includes('decommissioned') || errText.includes('rate_limit_exceeded') || err.status === 429;
       
       if (isModelError) {
-        console.log(`Model ${targetModel} not found. Fetching available models for fallback...`);
+        console.log(`Model ${targetModel} failed. Fetching available models for fallback loop...`);
         const modelsPage = await groq.models.list();
         const availableModels = modelsPage.data?.map(m => m.id) || [];
         
-        // Dynamically pick the first valid text model, excluding audio/vision/guard/TTS/embedding models
-        const fallbackModel = availableModels.find(m => m !== targetModel && !m.includes('whisper') && !m.includes('vision') && !m.includes('guard') && !m.includes('orpheus') && !m.includes('embed')) || availableModels[0];
+        let validModels = availableModels.filter(m => m !== targetModel && !m.includes('whisper') && !m.includes('vision') && !m.includes('guard') && !m.includes('orpheus') && !m.includes('embed') && !m.includes('deepseek') && !m.includes('qwq'));
         
-        if (fallbackModel && fallbackModel !== targetModel) {
-          console.log(`Retrying with fallback model: ${fallbackModel}`);
-          completion = await groq.chat.completions.create({
-            model: fallbackModel,
-            messages,
-            temperature: 0.5,
-            max_tokens: 150,
-          });
-        } else {
-          throw err;
+        // Sort to prioritize 8b, 3b, 1b, instant models first
+        validModels.sort((a, b) => {
+          const aSmall = a.includes('8b') || a.includes('3b') || a.includes('1b') || a.includes('instant');
+          const bSmall = b.includes('8b') || b.includes('3b') || b.includes('1b') || b.includes('instant');
+          if (aSmall && !bSmall) return -1;
+          if (!aSmall && bSmall) return 1;
+          return 0;
+        });
+        
+        let success = false;
+        let lastErr = err;
+        
+        // Try up to 4 models sequentially
+        for (const fallbackModel of validModels.slice(0, 4)) {
+          try {
+            console.log(`Retrying with fallback model: ${fallbackModel}`);
+            completion = await groq.chat.completions.create({
+              model: fallbackModel,
+              messages,
+              temperature: 0.5,
+              max_tokens: 150,
+            });
+            success = true;
+            break; // Success!
+          } catch (fallbackErr) {
+            lastErr = fallbackErr;
+            const fallbackErrText = fallbackErr.message || '';
+            const isRetryable = fallbackErrText.includes('rate_limit_exceeded') || fallbackErr.status === 429 || fallbackErrText.includes('decommissioned') || fallbackErrText.includes('model_not_found') || fallbackErrText.includes('does not exist');
+            if (!isRetryable) break; // Break on hard errors (like bad prompt)
+          }
+        }
+        
+        if (!success) {
+          throw lastErr;
         }
       } else {
         throw err;
