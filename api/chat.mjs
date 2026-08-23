@@ -119,12 +119,43 @@ export default async function handler(req, res) {
       { role: 'user', content: message },
     ]
 
-    const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
-      messages,
-      temperature: 0.5,
-      max_tokens: 150,
-    })
+    let targetModel = 'llama-3.3-70b-versatile';
+    let completion;
+
+    try {
+      completion = await groq.chat.completions.create({
+        model: targetModel,
+        messages,
+        temperature: 0.5,
+        max_tokens: 150,
+      });
+    } catch (err) {
+      const errText = err.message || '';
+      const isModelError = errText.includes('model_not_found') || errText.includes('model_decommissioned') || errText.includes('does not exist') || errText.includes('decommissioned');
+      
+      if (isModelError) {
+        console.log(`Model ${targetModel} not found. Fetching available models for fallback...`);
+        const modelsPage = await groq.models.list();
+        const availableModels = modelsPage.data?.map(m => m.id) || [];
+        
+        // Dynamically pick the first valid text model, excluding audio/vision/guard/TTS models
+        const fallbackModel = availableModels.find(m => m !== targetModel && !m.includes('whisper') && !m.includes('vision') && !m.includes('guard') && !m.includes('orpheus')) || availableModels[0];
+        
+        if (fallbackModel && fallbackModel !== targetModel) {
+          console.log(`Retrying with fallback model: ${fallbackModel}`);
+          completion = await groq.chat.completions.create({
+            model: fallbackModel,
+            messages,
+            temperature: 0.5,
+            max_tokens: 150,
+          });
+        } else {
+          throw err;
+        }
+      } else {
+        throw err;
+      }
+    }
 
     const reply = completion.choices[0]?.message?.content || 'Sorry, I couldn\'t process that. Please try again.'
 
