@@ -180,7 +180,7 @@ export default function ChatWidget() {
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'bot', content: data.reply, time: new Date() }])
     } catch (err) {
-      setMessages((prev) => [...prev, { role: 'bot', content: `Error: ${err.message}`, time: new Date() }])
+      setMessages((prev) => [...prev, { role: 'bot', content: 'Something went wrong, please try again later.', time: new Date() }])
     }
 
     setIsTyping(false)
